@@ -1,1 +1,1 @@
-# S-JEA6a-S61M-StudentenhuisApp
+# StudentenhuisApp
