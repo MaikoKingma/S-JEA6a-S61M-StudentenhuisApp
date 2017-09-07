@@ -203,3 +203,4 @@ typings/
 backend/stockapp/.project
 backend/stockapp/.classpath
 backend/stockapp/.settings/
+*.iml
