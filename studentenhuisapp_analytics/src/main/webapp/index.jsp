@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Hello World!</h2>
+<h2>Welkom to the studentenhuisapp_analytics</h2>
 </body>
 </html>
