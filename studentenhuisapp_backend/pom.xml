@@ -43,6 +43,22 @@
       <version>42.1.4</version>
     </dependency>
 
+    <!-- System -->
+
+    <dependency>
+      <groupId>com.studentenhuisapp.models</groupId>
+      <artifactId>studentenhuisapp_models</artifactId>
+      <scope>system</scope>
+      <systemPath>E:/Maiko/Documents/School/S6 Maatwerk/JEA/StudentenhuisApp/studentenhuisapp_models/out/artifacts/models/models.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>com.studentenhuisapp.JMSmodels</groupId>
+      <artifactId>studentenhuisapp_JMSmodels</artifactId>
+      <scope>system</scope>
+      <systemPath>E:/Maiko/Documents/School/S6 Maatwerk/JEA/StudentenhuisApp/studentenhuisapp_models/out/artifacts/JMSmodels/JMSmodels.jar</systemPath>
+    </dependency>
+
     <!-- Testing -->
 
     <!-- https://mvnrepository.com/artifact/junit/junit -->
