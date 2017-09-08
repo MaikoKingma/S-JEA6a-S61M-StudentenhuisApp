@@ -9,11 +9,13 @@ public class JMSMessage {
     private long groupId;
     private long userId;
     private Events event;
+    private String body;
 
-    public JMSMessage(long id, Calendar date, Events event) {
+    public JMSMessage(long id, Calendar date, Events event, String body) {
         this.id = id;
         this.date = date;
         this.event = event;
+        this.body = body;
     }
 
     public long getId() {
@@ -54,5 +56,13 @@ public class JMSMessage {
 
     public void setEvent(Events event) {
         this.event = event;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }
