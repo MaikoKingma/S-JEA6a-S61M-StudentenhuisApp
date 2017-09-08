@@ -36,7 +36,7 @@ public class MessageSenderGateway {
 
     public Message createTextMessage(String message) {
         try {
-            javax.jms.Message msg = session.createTextMessage(message);
+            Message msg = session.createTextMessage(message);
             return msg;
         } catch (JMSException e) {
             e.printStackTrace();
