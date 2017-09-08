@@ -13,7 +13,7 @@ public class JMSBrokerGateway {
 
     public JMSBrokerGateway() {
         sender = new MessageSenderGateway("StudentenhuisappRequestQueue");
-        sendMessage(new JMSMessage(nextId(), Calendar.getInstance(), Events.SERVER_START, "Studentenhuisapp_backend started"));
+        sendMessage("Studentenhuisapp_backend started", Events.SERVER_START);
     }
 
     public void sendMessage(String body, Events event, long groupId, long userId) {
