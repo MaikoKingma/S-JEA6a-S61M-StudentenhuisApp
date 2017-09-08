@@ -69,7 +69,7 @@ public class JMSMessage {
     }
 
     /**
-     * Note: MilliSeconds are not converted to Json
+     * Note: Only YEAR, MONTH, DAY_OF_YEAR, HOUR_OF_DAY, MINUTE & SECOND are converted to JSON
      */
     public String toJson() {
         return new Gson().toJson(this);

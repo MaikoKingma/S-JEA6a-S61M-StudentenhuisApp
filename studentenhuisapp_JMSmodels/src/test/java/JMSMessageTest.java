@@ -10,7 +10,7 @@ public class JMSMessageTest {
     @Test
     public void jmsMessageJSONTest() throws Exception {
         //Create new dummy message
-        JMSMessage oldMessage = new JMSMessage(0, Calendar.getInstance(), Events.ACCOUNT_CREATED, "Test body");
+        JMSMessage oldMessage = new JMSMessage(0, Calendar.getInstance(), Events.SERVER_START, "Test body");
         oldMessage.setUserId(0);
         oldMessage.setGroupId(0);
 

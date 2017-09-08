@@ -1,6 +1,7 @@
 package JMS.Message;
 
 public enum Events {
+    SERVER_START,
     ACCOUNT_CREATED,
     ACCOUNT_MODIFIED,
     ACCOUNT_DEACTIVATED,
