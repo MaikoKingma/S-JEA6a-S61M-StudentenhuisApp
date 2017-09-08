@@ -2,6 +2,8 @@ package JMS.Message;
 
 import java.util.Calendar;
 
+import com.google.gson.Gson;
+
 public class JMSMessage {
 
     private long id;
@@ -64,5 +66,16 @@ public class JMSMessage {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    /**
+     * Note: MilliSeconds are not converted to Json
+     */
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static JMSMessage fromJson(String json) {
+        return new Gson().fromJson(json, JMSMessage.class);
     }
 }
