@@ -14,8 +14,9 @@ public class User {
     private String mail;
     private boolean active;
 
-    public User(long id, String fullName, String mail) {
-        this.id = id;
+    public User() { }
+
+    public User(String fullName, String mail) {
         this.fullName = fullName;
         this.mail = mail;
         this.active = true;
