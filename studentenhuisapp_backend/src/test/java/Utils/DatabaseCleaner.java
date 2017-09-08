@@ -1,5 +1,7 @@
 package Utils;
 
+import Models.*;
+
 import javax.persistence.EntityManager;
 import java.sql.SQLException;
 
@@ -13,7 +15,7 @@ public class DatabaseCleaner {
     public void clean() throws SQLException {
         em.getTransaction().begin();
 
-        //ToDO add models
+        //deleteEntity(User.class);
 
         em.getTransaction().commit();
         em.close();
