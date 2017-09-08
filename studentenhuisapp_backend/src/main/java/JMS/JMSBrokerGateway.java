@@ -3,6 +3,7 @@ package JMS;
 import JMS.Gateway.*;
 import JMS.Message.*;
 
+//import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import java.util.Calendar;
 
@@ -13,8 +14,17 @@ public class JMSBrokerGateway {
 
     public JMSBrokerGateway() {
         sender = new MessageSenderGateway("StudentenhuisappRequestQueue");
-        sendMessage("Studentenhuisapp_backend started", Events.SERVER_START);
+        JMSMessage message = new JMSMessage(nextId(), Calendar.getInstance(), Events.SERVER_START, "Studentenapp_backend started");
+        message.setGroupId(-1);
+        message.setUserId(-1);
+        sendMessage(message);
     }
+
+//    @PostConstruct
+//    public void init() {
+//        sender = new MessageSenderGateway("StudentenhuisappRequestQueue");
+//        sendMessage("Studentenhuisapp_backend started", Events.SERVER_START);
+//    }
 
     public void sendMessage(String body, Events event, long groupId, long userId) {
         JMSMessage message = new JMSMessage(nextId(), Calendar.getInstance(), event, body);
