@@ -1,6 +1,6 @@
 package JMS;
 
-import JMS.Gateway.*;
+import JMS.Gateway.MessageSenderGateway;
 import JMS.Message.*;
 
 //import javax.annotation.PostConstruct;
