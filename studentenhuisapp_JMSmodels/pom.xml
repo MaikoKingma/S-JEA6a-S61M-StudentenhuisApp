@@ -20,4 +20,13 @@
             <version>5.15.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>studentenhuisapp_JMSmodels</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

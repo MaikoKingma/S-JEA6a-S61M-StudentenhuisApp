@@ -11,4 +11,13 @@
         <groupId>com.studentenhuisapp</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <build>
+        <finalName>studentenhuisapp_models</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
