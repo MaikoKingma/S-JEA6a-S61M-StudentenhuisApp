@@ -1,19 +1,19 @@
-package Gateway;
+package JMS.Gateway;
 
 import javax.jms.*;
 import javax.naming.*;
 import java.util.Properties;
 
-public class MessageReceiverGateway {
+public class MessageSenderGateway {
     private final String INITIAL_CONTEXT_FACTORY = "org.apache.activemq.jndi.ActiveMQInitialContextFactory";
     private final String PROVIDER_URL = "tcp://localhost:61616";
 
     private Connection connection;
     private Session session;
     private Destination destination;
-    private MessageConsumer consumer;
+    private MessageProducer producer;
 
-    public MessageReceiverGateway(String channelName) {
+    public MessageSenderGateway(String channelName) {
         Properties props = new Properties();
         props.setProperty(Context.INITIAL_CONTEXT_FACTORY, INITIAL_CONTEXT_FACTORY);
         props.setProperty(Context.PROVIDER_URL, PROVIDER_URL);
@@ -26,18 +26,28 @@ public class MessageReceiverGateway {
             connection = connectionFactory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-            // connect to the receiver destination
+            // connect to the sender destination
             destination = (Destination) jndiContext.lookup(channelName);
-            consumer = session.createConsumer(destination);
-            connection.start(); // this is needed to start receiving messages
+            producer = session.createProducer(destination);
         } catch (NamingException | JMSException e) {
             e.printStackTrace();
         }
     }
 
-    public void setListener(MessageListener listener) {
+    public Message createTextMessage(String message) {
         try {
-            consumer.setMessageListener(listener);
+            Message msg = session.createTextMessage(message);
+            return msg;
+        } catch (JMSException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void send(Message msg) {
+        try {
+            producer.send(msg);
+            System.out.println("<<< CorrolationId: " + msg.getJMSCorrelationID() + " JMS.Message.JMSMessage: " + ((TextMessage) msg).getText());
         } catch (JMSException e) {
             e.printStackTrace();
         }

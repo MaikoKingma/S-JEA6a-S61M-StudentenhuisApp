@@ -1,3 +1,5 @@
+package JMS.Message;
+
 public enum Events {
     ACCOUNT_CREATED,
     ACCOUNT_MODIFIED,

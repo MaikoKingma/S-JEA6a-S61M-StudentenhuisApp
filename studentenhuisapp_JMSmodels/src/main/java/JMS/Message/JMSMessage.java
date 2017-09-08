@@ -1,6 +1,8 @@
+package JMS.Message;
+
 import java.util.Calendar;
 
-public class Message {
+public class JMSMessage {
 
     private long id;
     private Calendar date;
@@ -8,7 +10,7 @@ public class Message {
     private long userId;
     private Events event;
 
-    public Message(long id, Calendar date, Events event) {
+    public JMSMessage(long id, Calendar date, Events event) {
         this.id = id;
         this.date = date;
         this.event = event;
