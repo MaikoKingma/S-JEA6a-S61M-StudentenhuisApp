@@ -10,7 +10,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private String fullName;
+    @Column(unique = true, nullable = false)
     private String mail;
     private boolean active;
 
