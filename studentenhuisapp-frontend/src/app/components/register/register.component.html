@@ -1,0 +1,18 @@
+<md-card>
+    <md-form-field>
+        <input mdInput placeholder="Fullname" type="text" [(ngModel)]="newAccount.fullName">
+    </md-form-field> <br/>
+    <md-form-field>
+        <input mdInput placeholder="Email" type="text" [(ngModel)]="newAccount.mail">
+    </md-form-field> <br/>
+    <md-form-field>
+        <input mdInput placeholder="Password" type="password">
+    </md-form-field> <br/>
+    <md-form-field>
+        <input mdInput placeholder="Retype Password" type="password">
+    </md-form-field> <br/>
+    <md-card-actions>
+        <button md-button (click)="cancelBtn()">Cancel</button>
+        <button md-button [disabled]="!isValidForm()" (click)="createAccountBtn(newAccount)">Create</button>
+    </md-card-actions>
+</md-card>

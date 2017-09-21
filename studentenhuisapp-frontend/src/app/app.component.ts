@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,4 +10,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'the Studentenhuisapp';
+  public loggingin = true;
+
+  onRegisterAccount() {
+    this.loggingin = false;
+  }
+  onLogin() {
+    this.loggingin = true;
+  }
 }

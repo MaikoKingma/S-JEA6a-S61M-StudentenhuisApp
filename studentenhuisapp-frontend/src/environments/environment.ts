@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  account_api: 'http://localhost:8080/stock/accounts'
+  account_api: 'http://localhost:8080/studentenhuisapp/accounts'
 };
