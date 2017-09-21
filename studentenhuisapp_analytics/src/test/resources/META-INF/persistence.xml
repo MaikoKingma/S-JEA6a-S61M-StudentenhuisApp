@@ -7,7 +7,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/StudentenhuisappTestDB"/>
             <property name="javax.persistence.jdbc.password" value="studentenhuisapp123"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.user" value="studentenhuisapp"/>
+            <property name="javax.persistence.jdbc.account" value="studentenhuisapp"/>
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
             <property name="eclipselink.logging.logger" value="DefaultLogger"/>
             <property name="eclipselink.logging.level" value="FINE"/>

@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
-public class User {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,12 +16,11 @@ public class User {
     private String mail;
     private boolean active;
 
-    public User() { }
+    public Account() { }
 
-    public User(String fullName, String mail) {
+    public Account(String fullName, String mail) {
         this.fullName = fullName;
         this.mail = mail;
-        this.active = true;
     }
 
     public long getId() {

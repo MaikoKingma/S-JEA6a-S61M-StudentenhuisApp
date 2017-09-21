@@ -1,7 +1,7 @@
 package DAO.JPAImpl;
 
-import DAO.IUserDao;
-import Models.User;
+import DAO.IAccountDao;
+import Models.Account;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ejb.Stateless;
@@ -10,26 +10,27 @@ import javax.persistence.*;
 
 @Stateless
 @Default
-public class UserDaoJPA implements IUserDao {
+public class AccountDaoJPA implements IAccountDao {
 
     @PersistenceContext(unitName = "ProjectPub_StockPU")
     private EntityManager em;
 
-    public UserDaoJPA() { }
+    public AccountDaoJPA() { }
 
     @Override
-    public User create(User user) {
-        if (user.getFullName().equals("") ||
-                user.getMail().equals("")) {
+    public Account create(Account account) {
+        if (account.getFullName().equals("") ||
+                account.getMail().equals("")) {
             throw new NullPointerException();
         }
-        em.persist(user);
-        return user;
+        account.setActive(true);
+        em.persist(account);
+        return account;
     }
 
     @Override
-    public User edit(User entity) {
-        //ToDo User Story: Modify Account
+    public Account edit(Account entity) {
+        //ToDo Account Story: Modify Account
         //https://trello.com/c/JKkOgA1P/5-modify-account
         throw new NotImplementedException();
     }

@@ -16,6 +16,6 @@ public class Studentenhuisapp extends Application {
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(CORSFilter.class);
-        resources.add(UserController.class);
+        resources.add(AccountController.class);
     }
 }
