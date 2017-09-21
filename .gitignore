@@ -201,13 +201,8 @@ typings/
 
 # End of https://www.gitignore.io/api/node,java,maven,angular,intellij,visualstudiocode
 *.iml
-studentenhuisapp_backend/.project
 .project
-.settings/org.eclipse.m2e.core.prefs
-studentenhuisapp_analytics/.project
-studentenhuisapp_analytics/.settings/org.eclipse.m2e.core.prefs
-studentenhuisapp_backend/.settings/org.eclipse.m2e.core.prefs
-studentenhuisapp_JMSmodels/.project
-studentenhuisapp_JMSmodels/.settings/org.eclipse.m2e.core.prefs
-studentenhuisapp_models/.project
-studentenhuisapp_models/.settings/org.eclipse.m2e.core.prefs
+org.eclipse.m2e.core.prefs
+.project
+.classpath
+org.eclipse.jdt.core.prefs
