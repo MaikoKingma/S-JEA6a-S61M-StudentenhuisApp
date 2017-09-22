@@ -43,8 +43,6 @@ public class AccountControllerTest extends JerseyTest {
             Mockito.when(service.create(testAccount))
                     .thenReturn(testAccount);
 
-            System.out.println("Create account");
-            //Create a new Account
             final Response correctResult = target("/accounts")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(testAccount));
@@ -55,8 +53,6 @@ public class AccountControllerTest extends JerseyTest {
                     testAccount,
                     correctResult.readEntity(Account.class));
 
-            System.out.println("Create duplicate account");
-            //Try to create a duplicate product
             final Response duplicateResult = target("/accounts")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(testAccount));
@@ -64,8 +60,6 @@ public class AccountControllerTest extends JerseyTest {
                     HTTP_INTERNAL_ERROR,
                     duplicateResult.getStatus());
 
-            System.out.println("Create empty account");
-            //Try to create a new empty product
             final Response faultyResult = target("/accounts")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(""));
@@ -73,8 +67,6 @@ public class AccountControllerTest extends JerseyTest {
                     HTTP_INTERNAL_ERROR,
                     faultyResult.getStatus());
 
-            System.out.println("Create null account");
-            //Try to create a new null product
             final Response faultyResult2 = target("/accounts")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(null));
