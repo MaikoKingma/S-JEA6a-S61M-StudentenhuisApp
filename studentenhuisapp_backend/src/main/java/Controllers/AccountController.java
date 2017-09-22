@@ -34,4 +34,11 @@ public class AccountController {
     public Account edit(Account account) {
         return accountService.edit(account);
     }
+
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Account login(String mail) {
+        return accountService.login(mail);
+    }
 }

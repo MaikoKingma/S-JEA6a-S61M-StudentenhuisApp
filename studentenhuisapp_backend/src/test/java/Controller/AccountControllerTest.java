@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.persistence.EntityManager;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
 
@@ -90,5 +91,24 @@ public class AccountControllerTest extends JerseyTest {
         Assert.assertEquals("Empty account was modified",
                 HTTP_NO_CONTENT,
                 faultyResult.getStatus());
+    }
+
+    @Test
+    public void loginAccountTest() throws Exception {
+        final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
+        testAccount.setId(1);
+        testAccount.setActive(true);
+        Mockito.when(service.login(testAccount.getMail()))
+                .thenReturn(testAccount);
+
+        final Response correctResult = target("/accounts")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.text(testAccount.getMail()));
+        Assert.assertEquals("Wrong status was returned",
+                HTTP_OK,
+                correctResult.getStatus());
+        Assert.assertEquals("Wrong account was returned",
+                testAccount,
+                correctResult.readEntity(Account.class));
     }
 }
