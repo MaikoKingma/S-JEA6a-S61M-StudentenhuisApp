@@ -42,8 +42,10 @@ public class AccountDaoJPA implements IAccountDao {
     }
 
     @Override
-    public Account findById(long id) {
-        Account foundAccount = em.find(Account.class, id);
+    public Account findByMail(String mail) {
+        Query q = em.createNamedQuery("accountdao.findByMail");
+        q.setParameter("mail", mail);
+        final Account foundAccount = (Account) q.getSingleResult();
         if (foundAccount.isActive()) {
             return foundAccount;
         }

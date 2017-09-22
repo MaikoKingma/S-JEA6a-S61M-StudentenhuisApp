@@ -9,6 +9,7 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 
 import java.util.*;
@@ -88,17 +89,27 @@ public class AccountDaoJPATest {
 
     @Test
     public void findByIdAccountTest() throws Exception {
+        Query queryMock = em.createNamedQuery("accountdao.findByMail");
+        Mockito.when(q.)
         Mockito.when(em.find(Account.class, accounts.get(0).getId()))
                 .thenReturn(accounts.get(0));
 
         Assert.assertEquals("Wrong account was returned.",
                 accounts.get(0),
-                productDao.findById(accounts.get(0).getId()));
+                productDao.findByMail(accounts.get(0).getMail()));
 
         Mockito.when(em.find(Account.class, accounts.get(2).getId()))
                 .thenReturn(accounts.get(2));
 
         Assert.assertNotNull("Inactive account was returned.",
-                exceptionThrownBy(() -> productDao.findById(accounts.get(2).getId())));
+                exceptionThrownBy(() -> productDao.findByMail(accounts.get(2).getMail())));
+    }
+
+    private void mockNamedQuery(String name, List<Registration> results) {
+
+        Query mockedQuery = mock(Query.class);
+        when(mockedQuery.getResultList()).thenReturn(results);
+        when(this.cut.em.createNamedQuery(name)).thenReturn(mockedQuery);
+
     }
 }
