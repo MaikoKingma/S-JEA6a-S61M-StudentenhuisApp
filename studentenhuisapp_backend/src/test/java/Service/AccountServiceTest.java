@@ -35,9 +35,17 @@ public class AccountServiceTest {
         }};
     }
 
+    @Before
+    public void setUp() throws Exception {
+        //Mockito.doNothing().when(jmsBroker).sendMessage(Mockito.anyString(), Mockito.any(Events.class));
+        Mockito.doNothing().when(jmsBroker).sendMessage(Mockito.anyString(), Mockito.any(Events.class), Mockito.anyLong());
+        //Mockito.doNothing().when(jmsBroker).sendMessage(Mockito.anyString(), Mockito.any(Events.class), Mockito.anyLong(), Mockito.anyLong());
+    }
+
     @Test
     public void createAccountTest() throws Exception {
         final Account testAccount = new Account("Maiko", "maiko@mail.nl");
+        Mockito.when(userDao.create(testAccount)).thenReturn(testAccount);
         Assert.assertEquals("User was not created",
                 testAccount,
                 accountService.create(testAccount));
@@ -47,5 +55,15 @@ public class AccountServiceTest {
         Mockito.when(userDao.getAll()).thenReturn(accounts);
         Assert.assertNotNull("An account was created with an existing mail adress.",
                 exceptionThrownBy(() -> accountService.create(accounts.get(0))));
+    }
+
+    @Test
+    public void editAccountTest() throws Exception {
+        Mockito.when(userDao.edit(accounts.get(0))).thenReturn(accounts.get(0));
+        Assert.assertEquals("Account was not edited.",
+                accounts.get(0),
+                accountService.edit(accounts.get(0)));
+        Mockito.verify(jmsBroker)
+                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_MODIFIED), Mockito.eq(accounts.get(0).getId()));
     }
 }
