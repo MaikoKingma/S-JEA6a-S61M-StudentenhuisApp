@@ -9,6 +9,11 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import java.util.*;
+
+import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountDaoJPATest {
@@ -19,43 +24,50 @@ public class AccountDaoJPATest {
     @Mock
     private EntityManager em;
 
-    public AccountDaoJPATest() { }
+    List<Account> accounts;
+
+    public AccountDaoJPATest() {
+        accounts = new ArrayList<Account>() {{
+            add(new Account("Maiko", "maiko@mail.nl"));
+            add(new Account("Pim", "pim@mail.nl"));
+            add(new Account("Loek", "loek@mail.nl"));
+        }};
+    }
 
     @Test
-    public void createUserTest() throws Exception {
-        System.out.println("Test create user");
-        //Create a user and test if the values are correct
+    public void createAccountTest() throws Exception {
         final Account correctAccount = new Account("Maiko", "maiko@mail.nl");
-        Assert.assertEquals(correctAccount, productDao.create(correctAccount));
-        Assert.assertTrue(correctAccount.isActive());
+        Assert.assertEquals("User not created.",
+                correctAccount,
+                productDao.create(correctAccount));
+        Assert.assertTrue("New user is not active.",
+                correctAccount.isActive());
 
-        System.out.println("Test duplicate user");
-        //Check if duplicate mail adresses are allowed.
-        final Account duplicateUser = new Account("Maiko", "maiko@mail.nl");
-        Assert.assertEquals(null, duplicateUser);
+        Assert.assertNotNull("Empty name was accepted.",
+                exceptionThrownBy(() -> productDao.create(new Account("", "pim@mail.nl"))));
 
-        System.out.println("Test empty name");
-        try {
-            productDao.create(new Account("", "pim@mail.nl"));
-            Assert.fail("Empty name should not be accepted.");
-        } catch (NullPointerException e) { }
+        Assert.assertNotNull("Empty mail was accepted",
+                exceptionThrownBy(() -> productDao.create(new Account("Pim", ""))));
 
-        System.out.println("Test empty mail");
-        try {
-            productDao.create(new Account("Pim", ""));
-            Assert.fail("Empty mail should not be accepted.");
-        } catch (NullPointerException e) { }
+        Assert.assertNotNull("Null name was accepted",
+                exceptionThrownBy(() -> productDao.create(new Account(null, "pim@mail.nl"))));
 
-        System.out.println("Test null name");
-        try {
-            productDao.create(new Account(null, "pim@mail.nl"));
-            Assert.fail("Null name should not be accepted.");
-        } catch (NullPointerException e) { }
+        Assert.assertNotNull("Null mail was accepted",
+                exceptionThrownBy(() -> productDao.create(new Account("Pim", null))));
+    }
 
-        System.out.println("Test null mail");
-        try {
-            productDao.create(new Account("Pim", null));
-            Assert.fail("Null mail should not be accepted.");
-        } catch (NullPointerException e) { }
+    @Test
+    public void getAllAccountsTest() throws Exception {
+        final Query mockQuery = Mockito.mock(Query.class);
+        final String query = "select t from Account t";
+        Mockito.when(mockQuery.getResultList())
+                .thenReturn(accounts);
+        Mockito.when(em.createQuery(query))
+                .thenReturn(mockQuery);
+
+        final List<Account> newAccounts = productDao.getAll();
+        Assert.assertEquals("Get All Accounts did not return the correct accounts",
+                accounts.size(),
+                newAccounts.size());
     }
 }

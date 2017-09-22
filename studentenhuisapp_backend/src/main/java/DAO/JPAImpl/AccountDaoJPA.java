@@ -7,6 +7,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @Default
@@ -31,5 +32,10 @@ public class AccountDaoJPA implements IAccountDao {
     @Override
     public Account edit(Account entity) {
         return em.merge(entity);
+    }
+
+    @Override
+    public List<Account> getAll() {
+        return em.createQuery("select t from " + Account.class.getSimpleName() + " t").getResultList();
     }
 }

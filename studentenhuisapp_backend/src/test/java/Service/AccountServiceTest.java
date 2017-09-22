@@ -9,7 +9,9 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
+import java.util.*;
+
+import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
 
 //Note: always check if events are send to the JMS broker
 @RunWith(MockitoJUnitRunner.class)
@@ -23,11 +25,27 @@ public class AccountServiceTest {
     @Mock
     private JMSBrokerGateway jmsBroker;
 
+    List<Account> accounts;
+
+    public AccountServiceTest() {
+        accounts = new ArrayList<Account>() {{
+            add(new Account("Maiko", "maiko@mail.nl"));
+            add(new Account("Pim", "pim@mail.nl"));
+            add(new Account("Loek", "loek@mail.nl"));
+        }};
+    }
+
     @Test
-    public void createUserTest() throws Exception {
+    public void createAccountTest() throws Exception {
         final Account testAccount = new Account("Maiko", "maiko@mail.nl");
-        Assert.assertEquals(testAccount, accountService.create(testAccount));
-        verify(jmsBroker, times(1))
-                .sendMessage(Mockito.anyString(), eq(Events.ACCOUNT_CREATED), eq(testAccount.getId()));
+        Assert.assertEquals("User was not created",
+                testAccount,
+                accountService.create(testAccount));
+        Mockito.verify(jmsBroker)
+                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_CREATED), Mockito.eq(testAccount.getId()));
+
+        Mockito.when(userDao.getAll()).thenReturn(accounts);
+        Assert.assertNotNull("An account was created with an existing mail adress.",
+                exceptionThrownBy(() -> accountService.create(accounts.get(0))));
     }
 }
