@@ -9,6 +9,9 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import java.util.*;
 
 import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
 
@@ -21,10 +24,18 @@ public class AccountDaoJPATest {
     @Mock
     private EntityManager em;
 
-    public AccountDaoJPATest() { }
+    List<Account> accounts;
+
+    public AccountDaoJPATest() {
+        accounts = new ArrayList<Account>() {{
+            add(new Account("Maiko", "maiko@mail.nl"));
+            add(new Account("Pim", "pim@mail.nl"));
+            add(new Account("Loek", "loek@mail.nl"));
+        }};
+    }
 
     @Test
-    public void createUserTest() throws Exception {
+    public void createAccountTest() throws Exception {
         final Account correctAccount = new Account("Maiko", "maiko@mail.nl");
         Assert.assertEquals("User not created.",
                 correctAccount,
@@ -43,5 +54,20 @@ public class AccountDaoJPATest {
 
         Assert.assertNotNull("Null mail was accepted",
                 exceptionThrownBy(() -> productDao.create(new Account("Pim", null))));
+    }
+
+    @Test
+    public void getAllAccountsTest() throws Exception {
+        final Query mockQuery = Mockito.mock(Query.class);
+        final String query = "select t from Account t";
+        Mockito.when(mockQuery.getResultList())
+                .thenReturn(accounts);
+        Mockito.when(em.createQuery(query))
+                .thenReturn(mockQuery);
+
+        final List<Account> newAccounts = productDao.getAll();
+        Assert.assertEquals("Get All Accounts did not return the correct accounts",
+                accounts.size(),
+                newAccounts.size());
     }
 }

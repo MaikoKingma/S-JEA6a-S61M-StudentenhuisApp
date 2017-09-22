@@ -7,6 +7,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.*;
+import java.util.List;
 
 @Stateless
 @Default
@@ -33,5 +34,10 @@ public class AccountDaoJPA implements IAccountDao {
         //ToDo Account Story: Modify Account
         //https://trello.com/c/JKkOgA1P/5-modify-account
         throw new NotImplementedException();
+    }
+
+    @Override
+    public List<Account> getAll() {
+        return em.createQuery("select t from " + Account.class.getSimpleName() + " t").getResultList();
     }
 }
