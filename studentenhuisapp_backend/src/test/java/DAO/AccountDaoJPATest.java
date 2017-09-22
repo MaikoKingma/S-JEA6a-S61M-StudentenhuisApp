@@ -29,10 +29,10 @@ public class AccountDaoJPATest {
         Assert.assertEquals(correctAccount, productDao.create(correctAccount));
         Assert.assertTrue(correctAccount.isActive());
 
-//        System.out.println("Test duplicate user");
-//        //Check if duplicate mail adresses are allowed.
-//        final Account duplicateUser = new Account("Maiko", "maiko@mail.nl");
-//        Assert.assertEquals(null, duplicateUser);
+        System.out.println("Test duplicate user");
+        //Check if duplicate mail adresses are allowed.
+        final Account duplicateUser = new Account("Maiko", "maiko@mail.nl");
+        Assert.assertEquals(null, duplicateUser);
 
         System.out.println("Test empty name");
         try {
@@ -57,7 +57,5 @@ public class AccountDaoJPATest {
             productDao.create(new Account("Pim", null));
             Assert.fail("Null mail should not be accepted.");
         } catch (NullPointerException e) { }
-
-        //ToDo test duplicate name
     }
 }

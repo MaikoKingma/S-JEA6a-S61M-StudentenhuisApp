@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Default
 public class AccountDaoJPA implements IAccountDao {
 
-    @PersistenceContext(unitName = "ProjectPub_StockPU")
+    @PersistenceContext(unitName = "StudentenhuisappPU")
     private EntityManager em;
 
     public AccountDaoJPA() { }
@@ -30,8 +30,6 @@ public class AccountDaoJPA implements IAccountDao {
 
     @Override
     public Account edit(Account entity) {
-        //ToDo Account Story: Modify Account
-        //https://trello.com/c/JKkOgA1P/5-modify-account
-        throw new NotImplementedException();
+        return em.merge(entity);
     }
 }
