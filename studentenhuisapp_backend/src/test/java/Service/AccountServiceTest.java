@@ -66,4 +66,14 @@ public class AccountServiceTest {
         Mockito.verify(jmsBroker)
                 .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_MODIFIED), Mockito.eq(accounts.get(0).getId()));
     }
+
+    @Test
+    public void loginAccountTest() throws Exception {
+        Mockito.when(userDao.findByMail(accounts.get(0).getMail())).thenReturn(accounts.get(0));
+        Assert.assertEquals("Wrong account returned.",
+                accounts.get(0),
+                accountService.login(accounts.get(0).getMail()));
+        Mockito.verify(jmsBroker)
+                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_LOGGED_IN), Mockito.eq(accounts.get(0).getId()));
+    }
 }

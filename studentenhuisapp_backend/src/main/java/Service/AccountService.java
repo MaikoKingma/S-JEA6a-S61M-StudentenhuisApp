@@ -37,4 +37,10 @@ public class AccountService {
         jmsBroker.sendMessage("Account modified", Events.ACCOUNT_MODIFIED, newAccount.getId());
         return newAccount;
     }
+
+    public Account login(String mail) {
+        Account account = userDao.findByMail(mail);
+        jmsBroker.sendMessage("User logged in", Events.ACCOUNT_LOGGED_IN, account.getId());
+        return account;
+    }
 }
