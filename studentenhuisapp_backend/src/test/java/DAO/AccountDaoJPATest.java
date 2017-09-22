@@ -88,28 +88,19 @@ public class AccountDaoJPATest {
     }
 
     @Test
-    public void findByIdAccountTest() throws Exception {
-        Query queryMock = em.createNamedQuery("accountdao.findByMail");
-        Mockito.when(q.)
-        Mockito.when(em.find(Account.class, accounts.get(0).getId()))
-                .thenReturn(accounts.get(0));
+    public void findByMailAccountTest() throws Exception {
+        Query mockedQuery = Mockito.mock(Query.class);
+        Mockito.when(em.createNamedQuery("accountdao.findByMail")).thenReturn(mockedQuery);
+        Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(0));
 
         Assert.assertEquals("Wrong account was returned.",
                 accounts.get(0),
                 productDao.findByMail(accounts.get(0).getMail()));
+        Mockito.verify(mockedQuery).setParameter("mail", accounts.get(0).getMail());
 
-        Mockito.when(em.find(Account.class, accounts.get(2).getId()))
-                .thenReturn(accounts.get(2));
+        Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(2));
 
         Assert.assertNotNull("Inactive account was returned.",
                 exceptionThrownBy(() -> productDao.findByMail(accounts.get(2).getMail())));
-    }
-
-    private void mockNamedQuery(String name, List<Registration> results) {
-
-        Query mockedQuery = mock(Query.class);
-        when(mockedQuery.getResultList()).thenReturn(results);
-        when(this.cut.em.createNamedQuery(name)).thenReturn(mockedQuery);
-
     }
 }
