@@ -70,4 +70,13 @@ public class AccountDaoJPATest {
                 accounts.size(),
                 newAccounts.size());
     }
+
+    @Test
+    public void editAccountTest() throws Exception {
+        Mockito.when(em.merge(accounts.get(0))).thenReturn(accounts.get(0));
+        Assert.assertEquals("Account was not merged.",
+            accounts.get(0),
+            productDao.edit(accounts.get(0)));
+        Mockito.verify(em).merge(accounts.get(0));
+    }
 }
