@@ -39,38 +39,38 @@ public class AccountControllerTest extends JerseyTest {
     }
 
     @Test
-    public void createAccountTest() throws Exception {
+    public void createUserTest() throws Exception {
         final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
         when(service.create(testAccount))
                 .thenReturn(testAccount);
 
+        System.out.println("Create account");
+        //Create a new Account
         final Response correctResult = target("/accounts")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(testAccount));
-        Assert.assertEquals("Create Account did not give the correct response.",
-                HTTP_CREATED,
-                correctResult.getStatus());
-        Assert.assertEquals("Create Account did not return the correct account.", testAccount, correctResult.readEntity(Account.class));
+        Assert.assertEquals(HTTP_CREATED, correctResult.getStatus());
+        Assert.assertEquals(testAccount, correctResult.readEntity(Account.class));
 
+        System.out.println("Create duplicate account");
+        //Try to create a duplicate product
         final Response duplicateResult = target("/accounts")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(testAccount));
-        Assert.assertEquals("Duplicate account was created.",
-                HTTP_INTERNAL_ERROR,
-                duplicateResult.getStatus());
+        Assert.assertEquals(HTTP_INTERNAL_ERROR, duplicateResult.getStatus());
 
+        System.out.println("Create empty account");
+        //Try to create a new empty product
         final Response faultyResult = target("/accounts")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(""));
-        Assert.assertEquals("Empty account was created",
-                HTTP_INTERNAL_ERROR,
-                faultyResult.getStatus());
+        Assert.assertEquals(HTTP_INTERNAL_ERROR, faultyResult.getStatus());
 
+        System.out.println("Create null account");
+        //Try to create a new null product
         final Response faultyResult2 = target("/accounts")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.json(null));
-        Assert.assertEquals("Null account was created",
-                HTTP_INTERNAL_ERROR,
-                faultyResult2.getStatus());
+        Assert.assertEquals(HTTP_INTERNAL_ERROR, faultyResult2.getStatus());
     }
 }
