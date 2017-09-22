@@ -24,12 +24,14 @@ public class AccountService {
             throw new NullPointerException();
         }
 
+        account.setActive(true);
         Account newAccount = userDao.create(account);
         jmsBroker.sendMessage("New Account Created", Events.ACCOUNT_CREATED, newAccount.getId());
         return newAccount;
     }
 
     public Account edit(Account account) {
+        account.setActive(true);
         Account newAccount = userDao.edit(account);
         jmsBroker.sendMessage("Account modified", Events.ACCOUNT_MODIFIED, newAccount.getId());
         return newAccount;

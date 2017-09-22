@@ -24,14 +24,16 @@ public class AccountDaoJPA implements IAccountDao {
                 account.getMail().equals("")) {
             throw new NullPointerException();
         }
-        account.setActive(true);
         em.persist(account);
         return account;
     }
 
     @Override
     public Account edit(Account entity) {
-        return em.merge(entity);
+        if (em.find(Account.class, entity.getId()).isActive()) {
+            return em.merge(entity);
+        }
+        throw new NullPointerException();
     }
 
     @Override
