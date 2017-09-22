@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
-
 //Note: always check if events are send to the JMS broker
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
@@ -26,8 +24,10 @@ public class AccountServiceTest {
     @Test
     public void createUserTest() throws Exception {
         final Account testAccount = new Account("Maiko", "maiko@mail.nl");
-        Assert.assertEquals(testAccount, accountService.create(testAccount));
-        verify(jmsBroker, times(1))
-                .sendMessage(Mockito.anyString(), eq(Events.ACCOUNT_CREATED), eq(testAccount.getId()));
+        Assert.assertEquals("User was not created",
+                testAccount,
+                accountService.create(testAccount));
+        Mockito.verify(jmsBroker)
+                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_CREATED), Mockito.eq(testAccount.getId()));
     }
 }
