@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit() { }
 
   cancelBtn() {
+    this.newAccount = new Account();
     this.onLogin.emit();
   }
 
