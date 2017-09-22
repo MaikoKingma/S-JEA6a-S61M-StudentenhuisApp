@@ -32,6 +32,12 @@ public class AccountDaoJPATest {
             add(new Account("Pim", "pim@mail.nl"));
             add(new Account("Loek", "loek@mail.nl"));
         }};
+        accounts.get(0).setId(1);
+        accounts.get(0).setActive(true);
+        accounts.get(1).setId(2);
+        accounts.get(1).setActive(true);
+        accounts.get(2).setId(3);
+        accounts.get(2).setActive(false);
     }
 
     @Test
@@ -78,5 +84,21 @@ public class AccountDaoJPATest {
             accounts.get(0),
             productDao.edit(accounts.get(0)));
         Mockito.verify(em).merge(accounts.get(0));
+    }
+
+    @Test
+    public void findByIdAccountTest() throws Exception {
+        Mockito.when(em.find(Account.class, accounts.get(0).getId()))
+                .thenReturn(accounts.get(0));
+
+        Assert.assertEquals("Wrong account was returned.",
+                accounts.get(0),
+                productDao.findById(accounts.get(0).getId()));
+
+        Mockito.when(em.find(Account.class, accounts.get(2).getId()))
+                .thenReturn(accounts.get(2));
+
+        Assert.assertNotNull("Inactive account was returned.",
+                exceptionThrownBy(() -> productDao.findById(accounts.get(2).getId())));
     }
 }

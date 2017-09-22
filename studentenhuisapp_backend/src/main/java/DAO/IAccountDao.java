@@ -8,4 +8,5 @@ public interface IAccountDao {
     Account create(Account account);
     Account edit(Account account);
     List<Account> getAll();
+    Account findById(long id);
 }
