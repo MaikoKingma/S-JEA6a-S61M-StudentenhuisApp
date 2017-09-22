@@ -10,6 +10,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityManager;
 
+import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
+
 @RunWith(MockitoJUnitRunner.class)
 public class AccountDaoJPATest {
 
@@ -23,41 +25,23 @@ public class AccountDaoJPATest {
 
     @Test
     public void createUserTest() throws Exception {
-        System.out.println("Test create user");
-        //Create a user and test if the values are correct
         final Account correctAccount = new Account("Maiko", "maiko@mail.nl");
-        Assert.assertEquals(correctAccount, productDao.create(correctAccount));
-        Assert.assertTrue(correctAccount.isActive());
+        Assert.assertEquals("User not created.",
+                correctAccount,
+                productDao.create(correctAccount));
+        Assert.assertTrue("New user is not active.",
+                correctAccount.isActive());
 
-//        System.out.println("Test duplicate user");
-//        //Check if duplicate mail adresses are allowed.
-//        final Account duplicateUser = new Account("Maiko", "maiko@mail.nl");
-//        Assert.assertEquals(null, duplicateUser);
+        Assert.assertNotNull("Empty name was accepted.",
+                exceptionThrownBy(() -> productDao.create(new Account("", "pim@mail.nl"))));
 
-        System.out.println("Test empty name");
-        try {
-            productDao.create(new Account("", "pim@mail.nl"));
-            Assert.fail("Empty name should not be accepted.");
-        } catch (NullPointerException e) { }
+        Assert.assertNotNull("Empty mail was accepted",
+                exceptionThrownBy(() -> productDao.create(new Account("Pim", ""))));
 
-        System.out.println("Test empty mail");
-        try {
-            productDao.create(new Account("Pim", ""));
-            Assert.fail("Empty mail should not be accepted.");
-        } catch (NullPointerException e) { }
+        Assert.assertNotNull("Null name was accepted",
+                exceptionThrownBy(() -> productDao.create(new Account(null, "pim@mail.nl"))));
 
-        System.out.println("Test null name");
-        try {
-            productDao.create(new Account(null, "pim@mail.nl"));
-            Assert.fail("Null name should not be accepted.");
-        } catch (NullPointerException e) { }
-
-        System.out.println("Test null mail");
-        try {
-            productDao.create(new Account("Pim", null));
-            Assert.fail("Null mail should not be accepted.");
-        } catch (NullPointerException e) { }
-
-        //ToDo test duplicate name
+        Assert.assertNotNull("Null mail was accepted",
+                exceptionThrownBy(() -> productDao.create(new Account("Pim", null))));
     }
 }
