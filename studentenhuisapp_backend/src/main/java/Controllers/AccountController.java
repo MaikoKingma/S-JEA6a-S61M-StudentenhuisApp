@@ -24,9 +24,14 @@ public class AccountController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Account account) {
         final Account newAccount = accountService.create(account);
-        System.out.println("Pre uriinfo message");
         final URI uri = uriInfo.getAbsolutePathBuilder().path(newAccount.getId() + "").build();
-        System.out.println("Post uriinfo message");
         return Response.created(uri).entity(newAccount).build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Account edit(Account account) {
+        return accountService.edit(account);
     }
 }

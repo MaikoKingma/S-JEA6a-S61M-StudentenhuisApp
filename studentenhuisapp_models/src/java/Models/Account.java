@@ -54,4 +54,26 @@ public class Account {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        if (id != account.id) return false;
+        if (active != account.active) return false;
+        if (fullName != null ? !fullName.equals(account.fullName) : account.fullName != null) return false;
+        return mail != null ? mail.equals(account.mail) : account.mail == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
+        result = 31 * result + (mail != null ? mail.hashCode() : 0);
+        result = 31 * result + (active ? 1 : 0);
+        return result;
+    }
 }
