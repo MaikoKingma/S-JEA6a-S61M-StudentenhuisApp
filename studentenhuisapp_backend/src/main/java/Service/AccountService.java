@@ -20,8 +20,9 @@ public class AccountService {
     public Account create(Account account) {
         List<Account> currentAccounts = userDao.getAll();
         for(Account a : currentAccounts) {
-            if (a.getMail().equals(account.getMail()));
-            throw new NullPointerException();
+            if (a.getMail().equals(account.getMail())) {
+                throw new NullPointerException();
+            }
         }
 
         account.setActive(true);
