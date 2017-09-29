@@ -49,6 +49,8 @@ public class AccountServiceTest {
         Assert.assertEquals("User was not created",
                 testAccount,
                 accountService.create(testAccount));
+        Assert.assertTrue("New user is not active.",
+                testAccount.isActive());
         Mockito.verify(jmsBroker)
                 .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_CREATED), Mockito.eq(testAccount.getId()));
 

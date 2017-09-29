@@ -47,8 +47,6 @@ public class AccountDaoJPATest {
         Assert.assertEquals("User not created.",
                 correctAccount,
                 productDao.create(correctAccount));
-        Assert.assertTrue("New user is not active.",
-                correctAccount.isActive());
 
         Assert.assertNotNull("Empty name was accepted.",
                 exceptionThrownBy(() -> productDao.create(new Account("", "pim@mail.nl"))));
@@ -81,6 +79,7 @@ public class AccountDaoJPATest {
     @Test
     public void editAccountTest() throws Exception {
         Mockito.when(em.merge(accounts.get(0))).thenReturn(accounts.get(0));
+        Mockito.when(em.find(Account.class, accounts.get(0).getId())).thenReturn(accounts.get(0));
         Assert.assertEquals("Account was not merged.",
             accounts.get(0),
             productDao.edit(accounts.get(0)));
