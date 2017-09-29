@@ -5,6 +5,6 @@ import { ConfigService } from './config.service';
 export class MockConfigService extends ConfigService {
 
     getAccountApi(): string {
-        return 'accounts/'
-      }
+        return 'accounts/';
+    }
 }

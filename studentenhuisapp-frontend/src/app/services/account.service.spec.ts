@@ -38,12 +38,12 @@ describe('AccountService', () => {
 
     accountService.create(testAccount).subscribe((account) => {
       expect(account.id).toBeGreaterThan(0);
-      expect(account.fullname).toBe(testAccount.fullname);
+      expect(account.fullName).toBe(testAccount.fullName);
       expect(account.mail).toBe(testAccount.mail);
     });
 
     const request = httpMock.expectOne('accounts/');
-    request.flush({ id: 1, fullname: testAccount.fullname, mail: testAccount.mail });
+    request.flush({ id: 1, fullName: testAccount.fullName, mail: testAccount.mail });
     httpMock.verify();
   });
 });
