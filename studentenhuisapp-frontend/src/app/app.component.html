@@ -6,4 +6,5 @@
 <div layout-margin [ngSwitch]="currState">
   <app-login *ngSwitchCase="thisState.LOGIN" (onStateChange)="onStateChange($event)"></app-login>
   <app-register *ngSwitchCase="thisState.REGISTER" (onStateChange)="onStateChange($event)"></app-register>
+  <app-home *ngSwitchCase="thisState.PROFILE"></app-home>
 </div>
