@@ -22,9 +22,9 @@ describe('AccountService', () => {
       ]
     }).compileComponents();
     
-      accountService = TestBed.get(AccountService);
-      httpMock = TestBed.get(HttpTestingController);
-      configMock = TestBed.get(ConfigService);
+    accountService = TestBed.get(AccountService);
+    httpMock = TestBed.get(HttpTestingController);
+    configMock = TestBed.get(ConfigService);
   });
 
   it('should be created', inject([AccountService], (service: AccountService) => {
@@ -38,12 +38,25 @@ describe('AccountService', () => {
 
     accountService.create(testAccount).subscribe((account) => {
       expect(account.id).toBeGreaterThan(0);
-      expect(account.fullname).toBe(testAccount.fullname);
+      expect(account.fullName).toBe(testAccount.fullName);
       expect(account.mail).toBe(testAccount.mail);
     });
 
-    const request = httpMock.expectOne('accounts/');
-    request.flush({ id: 1, fullname: testAccount.fullname, mail: testAccount.mail });
+    const request = httpMock.expectOne(configMock.getAccountApi());
+    request.flush({ id: 1, fullName: testAccount.fullName, mail: testAccount.mail });
+    httpMock.verify();
+  });
+  it('login() should return a Account', () => {
+    const testAccount = new Account('testUser', 'test@mail.nl');
+
+    accountService.login(testAccount.mail).subscribe((account) => {
+      expect(account.id).toBeGreaterThan(0);
+      expect(account.fullName).toBe(testAccount.fullName);
+      expect(account.mail).toBe(testAccount.mail);
+    });
+
+    const request = httpMock.expectOne(configMock.getAccountApi());
+    request.flush({ id: 1, fullName: testAccount.fullName, mail: testAccount.mail });
     httpMock.verify();
   });
 });

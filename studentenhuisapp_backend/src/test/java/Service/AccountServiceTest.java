@@ -49,6 +49,8 @@ public class AccountServiceTest {
         Assert.assertEquals("User was not created",
                 testAccount,
                 accountService.create(testAccount));
+        Assert.assertTrue("New user is not active.",
+                testAccount.isActive());
         Mockito.verify(jmsBroker)
                 .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_CREATED), Mockito.eq(testAccount.getId()));
 
@@ -65,5 +67,15 @@ public class AccountServiceTest {
                 accountService.edit(accounts.get(0)));
         Mockito.verify(jmsBroker)
                 .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_MODIFIED), Mockito.eq(accounts.get(0).getId()));
+    }
+
+    @Test
+    public void loginAccountTest() throws Exception {
+        Mockito.when(userDao.findByMail(accounts.get(0).getMail())).thenReturn(accounts.get(0));
+        Assert.assertEquals("Wrong account returned.",
+                accounts.get(0),
+                accountService.login(accounts.get(0).getMail()));
+        Mockito.verify(jmsBroker)
+                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_LOGGED_IN), Mockito.eq(accounts.get(0).getId()));
     }
 }

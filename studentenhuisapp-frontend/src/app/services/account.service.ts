@@ -16,4 +16,8 @@ export class AccountService {
   public create(account: Account): Observable<Account> {
     return this.http.post<Account>(this.config.getAccountApi(), account);
   }
+
+  public login(mail: string): Observable<Account> {
+    return this.http.post<Account>(this.config.getAccountApi(), mail);
+  }
 }

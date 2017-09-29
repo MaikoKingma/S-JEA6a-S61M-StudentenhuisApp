@@ -9,6 +9,7 @@ import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.Query;
 
 import java.util.*;
@@ -32,6 +33,12 @@ public class AccountDaoJPATest {
             add(new Account("Pim", "pim@mail.nl"));
             add(new Account("Loek", "loek@mail.nl"));
         }};
+        accounts.get(0).setId(1);
+        accounts.get(0).setActive(true);
+        accounts.get(1).setId(2);
+        accounts.get(1).setActive(true);
+        accounts.get(2).setId(3);
+        accounts.get(2).setActive(false);
     }
 
     @Test
@@ -40,8 +47,6 @@ public class AccountDaoJPATest {
         Assert.assertEquals("User not created.",
                 correctAccount,
                 productDao.create(correctAccount));
-        Assert.assertTrue("New user is not active.",
-                correctAccount.isActive());
 
         Assert.assertNotNull("Empty name was accepted.",
                 exceptionThrownBy(() -> productDao.create(new Account("", "pim@mail.nl"))));
@@ -74,9 +79,27 @@ public class AccountDaoJPATest {
     @Test
     public void editAccountTest() throws Exception {
         Mockito.when(em.merge(accounts.get(0))).thenReturn(accounts.get(0));
+        Mockito.when(em.find(Account.class, accounts.get(0).getId())).thenReturn(accounts.get(0));
         Assert.assertEquals("Account was not merged.",
             accounts.get(0),
             productDao.edit(accounts.get(0)));
         Mockito.verify(em).merge(accounts.get(0));
+    }
+
+    @Test
+    public void findByMailAccountTest() throws Exception {
+        Query mockedQuery = Mockito.mock(Query.class);
+        Mockito.when(em.createNamedQuery("accountdao.findByMail")).thenReturn(mockedQuery);
+        Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(0));
+
+        Assert.assertEquals("Wrong account was returned.",
+                accounts.get(0),
+                productDao.findByMail(accounts.get(0).getMail()));
+        Mockito.verify(mockedQuery).setParameter("mail", accounts.get(0).getMail());
+
+        Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(2));
+
+        Assert.assertNotNull("Inactive account was returned.",
+                exceptionThrownBy(() -> productDao.findByMail(accounts.get(2).getMail())));
     }
 }

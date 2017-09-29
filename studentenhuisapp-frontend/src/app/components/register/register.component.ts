@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output, NgZone } from '@angular/core';
 
 import { Account } from '../../models/Account';
 import { AccountService } from '../../services/account.service';
+import { State } from '../../app.component';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,7 @@ import { AccountService } from '../../services/account.service';
 })
 export class RegisterComponent implements OnInit {
 
-  @Output() onLogin = new EventEmitter();
+  @Output() onStateChange = new EventEmitter();
 
   public newAccount: Account = new Account();
 
@@ -22,14 +23,15 @@ export class RegisterComponent implements OnInit {
   ngOnInit() { }
 
   cancelBtn() {
-    this.onLogin.emit();
+    this.newAccount = new Account();
+    this.onStateChange.emit({ state: State.LOGIN });
   }
 
   createAccountBtn(account: Account) {
     this.accountService.create(account).subscribe(account => {
       this._zone.run(() => {
         this.newAccount = new Account();
-        this.onLogin.emit();
+        this.onStateChange.emit({ state: State.LOGIN });
       });
     });
   }

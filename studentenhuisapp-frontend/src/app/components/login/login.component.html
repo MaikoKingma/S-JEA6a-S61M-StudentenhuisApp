@@ -3,7 +3,7 @@
         <input mdInput placeholder="Email" type="text" [(ngModel)]="mail">
     </md-form-field> <br/>
     <md-form-field>
-        <input mdInput placeholder="Password" type="password">
+        <input mdInput placeholder="Password" type="password" [(ngModel)]="password">
     </md-form-field>
     <md-card-actions>
         <button md-button [disabled]="!isValidForm()" (click)="loginBtn(mail)">Login</button>

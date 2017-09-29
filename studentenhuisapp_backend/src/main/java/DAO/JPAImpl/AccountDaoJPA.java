@@ -40,4 +40,15 @@ public class AccountDaoJPA implements IAccountDao {
     public List<Account> getAll() {
         return em.createQuery("select t from " + Account.class.getSimpleName() + " t").getResultList();
     }
+
+    @Override
+    public Account findByMail(String mail) {
+        Query q = em.createNamedQuery("accountdao.findByMail");
+        q.setParameter("mail", mail);
+        final Account foundAccount = (Account) q.getSingleResult();
+        if (foundAccount.isActive()) {
+            return foundAccount;
+        }
+        throw new NullPointerException();
+    }
 }

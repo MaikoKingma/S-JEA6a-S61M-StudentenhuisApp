@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @XmlRootElement
+@NamedQueries(value = {
+        @NamedQuery(name = "accountdao.findByMail", query = "SELECT p FROM Account p where p.mail = :mail")
+})
 public class Account {
 
     @Id

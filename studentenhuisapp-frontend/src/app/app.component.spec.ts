@@ -1,25 +1,32 @@
 import { TestBed, async } from '@angular/core/testing';
-
-import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
 import { MdCardModule, MdButtonModule, MdInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
+
+import { AppComponent } from './app.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { ConfigService } from './services/config.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        LoginComponent
+        LoginComponent,
+        RegisterComponent
       ],
       imports: [
         FormsModule,
         BrowserAnimationsModule,
         MdCardModule,
         MdButtonModule,
-        MdInputModule
-      ]
+        MdInputModule,
+        HttpClientTestingModule
+      ],
+      providers: [ ConfigService ]
     }).compileComponents();
   }));
 

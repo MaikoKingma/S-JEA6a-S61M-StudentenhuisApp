@@ -20,8 +20,9 @@ public class AccountService {
     public Account create(Account account) {
         List<Account> currentAccounts = userDao.getAll();
         for(Account a : currentAccounts) {
-            if (a.getMail().equals(account.getMail()));
-            throw new NullPointerException();
+            if (a.getMail().equals(account.getMail())) {
+                throw new NullPointerException();
+            }
         }
 
         account.setActive(true);
@@ -35,5 +36,11 @@ public class AccountService {
         Account newAccount = userDao.edit(account);
         jmsBroker.sendMessage("Account modified", Events.ACCOUNT_MODIFIED, newAccount.getId());
         return newAccount;
+    }
+
+    public Account login(String mail) {
+        Account account = userDao.findByMail(mail);
+        jmsBroker.sendMessage("User logged in", Events.ACCOUNT_LOGGED_IN, account.getId());
+        return account;
     }
 }
