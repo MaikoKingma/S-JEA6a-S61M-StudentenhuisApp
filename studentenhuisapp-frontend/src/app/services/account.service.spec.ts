@@ -22,7 +22,6 @@ describe('AccountService', () => {
       ]
     }).compileComponents();
     
-    const testAccount = new Account('testUser', 'test@mail.nl');
     accountService = TestBed.get(AccountService);
     httpMock = TestBed.get(HttpTestingController);
     configMock = TestBed.get(ConfigService);
@@ -35,25 +34,29 @@ describe('AccountService', () => {
     expect(configMock.getAccountApi()).toBe('accounts/');
   });
   it('create() should return a Account', () => {
-    accountService.create(this.testAccount).subscribe((account) => {
+    const testAccount = new Account('testUser', 'test@mail.nl');
+
+    accountService.create(testAccount).subscribe((account) => {
       expect(account.id).toBeGreaterThan(0);
-      expect(account.fullName).toBe(this.testAccount.fullName);
-      expect(account.mail).toBe(this.testAccount.mail);
+      expect(account.fullName).toBe(testAccount.fullName);
+      expect(account.mail).toBe(testAccount.mail);
     });
 
     const request = httpMock.expectOne(configMock.getAccountApi());
-    request.flush({ id: 1, fullName: this.testAccount.fullName, mail: this.testAccount.mail });
+    request.flush({ id: 1, fullName: testAccount.fullName, mail: testAccount.mail });
     httpMock.verify();
   });
-  fit('login() should return a Account', () => {
-    accountService.login(this.testAccount.mail).subscribe((account) => {
+  it('login() should return a Account', () => {
+    const testAccount = new Account('testUser', 'test@mail.nl');
+
+    accountService.login(testAccount.mail).subscribe((account) => {
       expect(account.id).toBeGreaterThan(0);
-      expect(account.fullName).toBe(this.testAccount.fullName);
-      expect(account.mail).toBe(this.testAccount.mail);
+      expect(account.fullName).toBe(testAccount.fullName);
+      expect(account.mail).toBe(testAccount.mail);
     });
 
     const request = httpMock.expectOne(configMock.getAccountApi());
-    request.flush({ id: 1, fullName: this.testAccount.fullName, mail: this.testAccount.mail });
+    request.flush({ id: 1, fullName: testAccount.fullName, mail: testAccount.mail });
     httpMock.verify();
   });
 });
