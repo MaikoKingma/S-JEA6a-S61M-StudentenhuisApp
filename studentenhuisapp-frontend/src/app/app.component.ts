@@ -8,13 +8,18 @@ import { RegisterComponent } from './components/register/register.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'the Studentenhuisapp';
-  public loggingin = true;
+  public thisState = State;
 
-  onRegisterAccount() {
-    this.loggingin = false;
+  title = 'the Studentenhuisapp';
+  public currState = State.LOGIN;
+
+  onStateChange($event) {
+    this.currState = $event.state;
   }
-  onLogin() {
-    this.loggingin = true;
-  }
+}
+
+export enum State {
+  REGISTER = 0,
+  LOGIN = 1,
+  PROFILE = 2
 }

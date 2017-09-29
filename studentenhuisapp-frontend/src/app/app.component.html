@@ -1,10 +1,9 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
     Welcome to {{title}}!
   </h1>
 </div>
-<div layout-margin>
-  <app-login [hidden]="!loggingin" (onRegisterAccount)="onRegisterAccount()"></app-login>
-  <app-register [hidden]="loggingin" (onLogin)="onLogin()"></app-register>
+<div layout-margin [ngSwitch]="currState">
+  <app-login *ngSwitchCase="thisState.LOGIN" (onStateChange)="onStateChange($event)"></app-login>
+  <app-register *ngSwitchCase="thisState.REGISTER" (onStateChange)="onStateChange($event)"></app-register>
 </div>
