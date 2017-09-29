@@ -200,7 +200,9 @@ typings/
 .history
 
 # End of https://www.gitignore.io/api/node,java,maven,angular,intellij,visualstudiocode
-backend/stockapp/.project
-backend/stockapp/.classpath
-backend/stockapp/.settings/
 *.iml
+.project
+org.eclipse.m2e.core.prefs
+.project
+.classpath
+org.eclipse.jdt.core.prefs
