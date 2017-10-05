@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IGroupDao {
     Group create(Group group);
-    List<Group> getAll();
+    Group findById(long id);
 }

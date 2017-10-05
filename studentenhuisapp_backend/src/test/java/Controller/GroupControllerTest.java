@@ -35,11 +35,13 @@ public class GroupControllerTest extends JerseyTest {
     }
 
     @Test
-    public void createAccountTest() throws Exception {
+    public void createGroupTest() throws Exception {
         final Account account = new Account("Maiko", "maiko999@mail.nl");
-        final Group testGroup = new Group("Studentenhuis", account);
-        Mockito.when(service.create(testGroup))
-                .thenReturn(testGroup);
+        final Group testGroup = new Group("Studentenhuis");
+        final Group returnGroup = testGroup;
+        returnGroup.addAccount(account);
+        Mockito.when(service.create(testGroup, account.getId()))
+                .thenReturn(returnGroup);
 
         final Response correctResult = target("/groups")
                 .request(MediaType.APPLICATION_JSON)

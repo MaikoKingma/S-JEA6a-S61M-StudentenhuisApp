@@ -99,4 +99,13 @@ public class AccountDaoJPATest {
         Assert.assertNotNull("Inactive account was returned.",
                 exceptionThrownBy(() -> accountDao.findByMail(accounts.get(2).getMail())));
     }
+
+    @Test
+    public void findByIdTest() throws Exception {
+        final Account account = new Account("Maiko", "maiko@mail.nl");
+        Mockito.when(em.find(Account.class, account.getId()))
+                .thenReturn(account);
+
+        Assert.assertEquals(account, accountDao.findById(account.getId()));
+    }
 }

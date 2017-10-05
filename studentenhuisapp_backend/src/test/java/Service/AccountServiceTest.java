@@ -78,4 +78,16 @@ public class AccountServiceTest {
         Mockito.verify(jmsBroker)
                 .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_LOGGED_IN), Mockito.eq(accounts.get(0).getId()));
     }
+
+    @Test
+    public void findByIdTest() throws Exception {
+        final Account testAccount = new Account("Maiko", "maiko@mail.nl");
+
+        Mockito.when(userDao.findById(testAccount.getId()))
+                .thenReturn(testAccount);
+
+        Assert.assertEquals("Did not return the right product.",
+                testAccount,
+                accountService.findById(testAccount.getId()));
+    }
 }

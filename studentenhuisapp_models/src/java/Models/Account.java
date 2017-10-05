@@ -2,6 +2,7 @@ package Models;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -59,6 +60,21 @@ public class Account {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public void addGroup(Group group) {
+        if (groups == null) {
+            groups = new ArrayList<>();
+        }
+        groups.add(group);
     }
 
     @Override

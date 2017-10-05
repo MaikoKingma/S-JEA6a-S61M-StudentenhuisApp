@@ -24,19 +24,24 @@ public class GroupDaoJPATest {
 
     @Test
     public void createAccountTest() throws Exception {
-        final Account account = new Account("Maiko", "maiko@mail.nl");
-        final Group correctGroup = new Group("Studentenhuis", account);
+        final Group correctGroup = new Group("Studentenhuis");
         Assert.assertEquals("Group not created.",
                 correctGroup,
                 groupDao.create(correctGroup));
 
         Assert.assertNotNull("Empty name was accepted.",
-                exceptionThrownBy(() -> groupDao.create(new Group("", account))));
+                exceptionThrownBy(() -> groupDao.create(new Group(""))));
 
         Assert.assertNotNull("Null name was accepted",
-                exceptionThrownBy(() -> groupDao.create(new Group(null, account))));
+                exceptionThrownBy(() -> groupDao.create(new Group(null))));
+    }
 
-        Assert.assertNotNull("Null account was accepted",
-                exceptionThrownBy(() -> groupDao.create(new Group("Maiko", null))));
+    @Test
+    public void findByIdTest() throws Exception {
+        final Group group = new Group("Studentenhuis");
+        Mockito.when(em.find(Group.class, group.getId()))
+                .thenReturn(group);
+
+        Assert.assertEquals(group, groupDao.findById(group.getId()));
     }
 }

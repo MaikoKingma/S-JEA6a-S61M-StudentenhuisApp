@@ -51,4 +51,9 @@ public class AccountDaoJPA implements IAccountDao {
         }
         throw new NullPointerException();
     }
+
+    @Override
+    public Account findById(long id) {
+        return em.find(Account.class, id);
+    }
 }

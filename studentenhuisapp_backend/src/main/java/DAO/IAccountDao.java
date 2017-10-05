@@ -9,4 +9,5 @@ public interface IAccountDao {
     Account edit(Account account);
     List<Account> getAll();
     Account findByMail(String mail);
+    Account findById(long id);
 }

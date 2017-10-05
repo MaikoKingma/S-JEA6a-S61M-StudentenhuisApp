@@ -3,9 +3,13 @@ package DAO.JPAImpl;
 import DAO.IGroupDao;
 import Models.*;
 
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
 import javax.persistence.*;
 import java.util.List;
 
+@Stateless
+@Default
 public class GroupDaoJPA implements IGroupDao {
 
     @PersistenceContext(unitName = "StudentenhuisappPU")
@@ -15,20 +19,15 @@ public class GroupDaoJPA implements IGroupDao {
 
     @Override
     public Group create(Group group) {
-        if (group.getName().equals("") ||
-                group.getAccounts().size() < 1) {
+        if (group.getName().equals("")) {
             throw new NullPointerException();
-        }
-        for (Account account : group.getAccounts()) {
-            if (account == null)
-                throw new NullPointerException();
         }
         em.persist(group);
         return group;
     }
 
     @Override
-    public List<Group> getAll() {
-        return em.createQuery("select t from " + Group.class.getSimpleName() + " t").getResultList();
+    public Group findById(long id) {
+        return em.find(Group.class, id);
     }
 }

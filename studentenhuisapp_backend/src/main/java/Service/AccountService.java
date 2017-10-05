@@ -43,4 +43,8 @@ public class AccountService {
         jmsBroker.sendMessage("User logged in", Events.ACCOUNT_LOGGED_IN, account.getId());
         return account;
     }
+
+    public Account findById(long id) {
+        return accountDao.findById(id);
+    }
 }

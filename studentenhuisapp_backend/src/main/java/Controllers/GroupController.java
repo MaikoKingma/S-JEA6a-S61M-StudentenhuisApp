@@ -1,5 +1,6 @@
 package Controllers;
 
+import Controllers.JsonBodies.newGroupInfo;
 import Models.Group;
 import Service.GroupService;
 
@@ -22,8 +23,8 @@ public class GroupController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Group group) {
-        final Group newGroup = groupService.create(group);
+    public Response create(newGroupInfo body) {
+        final Group newGroup = groupService.create(body.getGroup(), body.getAccountId());
         final URI uri = uriInfo.getAbsolutePathBuilder().path(newGroup.getId() + "").build();
         return Response.created(uri).entity(newGroup).build();
     }

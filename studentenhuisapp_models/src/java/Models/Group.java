@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @XmlRootElement
+@Table(name = "GROUPTABLE")
 public class Group {
 
     @Id
@@ -19,12 +20,8 @@ public class Group {
 
     public Group() { }
 
-    public Group(String name, Account creator) {
+    public Group(String name) {
         this.name = name;
-        if (accounts == null) {
-            accounts = new ArrayList<>();
-        }
-        this.accounts.add(creator);
     }
 
     public long getId() {
@@ -52,6 +49,9 @@ public class Group {
     }
 
     public void addAccount(Account account) {
+        if (accounts == null) {
+            accounts = new ArrayList<>();
+        }
         this.accounts.add(account);
     }
 }

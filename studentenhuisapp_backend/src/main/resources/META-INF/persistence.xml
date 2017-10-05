@@ -3,6 +3,7 @@
     <persistence-unit name="StudentenhuisappPU" transaction-type="JTA">
         <jta-data-source>StudentenhuisappJNDI</jta-data-source>
         <class>Models.Account</class>
+        <class>Models.Group</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
