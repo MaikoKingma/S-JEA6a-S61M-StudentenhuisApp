@@ -2,6 +2,7 @@ package Models;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,9 +19,12 @@ public class Group {
 
     public Group() { }
 
-    public Group(String name) {
+    public Group(String name, Account creator) {
         this.name = name;
-        this.accounts = accounts;
+        if (accounts == null) {
+            accounts = new ArrayList<>();
+        }
+        this.accounts.add(creator);
     }
 
     public long getId() {

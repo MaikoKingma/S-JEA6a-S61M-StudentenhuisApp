@@ -1,6 +1,7 @@
 package DAO.JPAImpl;
 
 import DAO.IGroupDao;
+import Models.Account;
 import Models.Group;
 
 import javax.persistence.*;
@@ -15,8 +16,13 @@ public class GroupDaoJPA implements IGroupDao {
 
     @Override
     public Group create(Group group) {
-        if (group.getName().equals("")) {
+        if (group.getName().equals("") ||
+                group.getAccounts().size() < 1) {
             throw new NullPointerException();
+        }
+        for (Account account : group.getAccounts()) {
+            if (account == null)
+                throw new NullPointerException();
         }
         em.persist(group);
         return group;

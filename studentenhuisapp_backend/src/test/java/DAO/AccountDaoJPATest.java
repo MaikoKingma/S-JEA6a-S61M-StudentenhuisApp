@@ -2,15 +2,12 @@ package DAO;
 
 import DAO.JPAImpl.AccountDaoJPA;
 import Models.Account;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
-import javax.persistence.Query;
+import javax.persistence.*;
 
 import java.util.*;
 
@@ -20,7 +17,7 @@ import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
 public class AccountDaoJPATest {
 
     @InjectMocks
-    private AccountDaoJPA productDao;
+    private AccountDaoJPA accountDao;
 
     @Mock
     private EntityManager em;
@@ -46,19 +43,19 @@ public class AccountDaoJPATest {
         final Account correctAccount = new Account("Maiko", "maiko@mail.nl");
         Assert.assertEquals("User not created.",
                 correctAccount,
-                productDao.create(correctAccount));
+                accountDao.create(correctAccount));
 
         Assert.assertNotNull("Empty name was accepted.",
-                exceptionThrownBy(() -> productDao.create(new Account("", "pim@mail.nl"))));
+                exceptionThrownBy(() -> accountDao.create(new Account("", "pim@mail.nl"))));
 
         Assert.assertNotNull("Empty mail was accepted",
-                exceptionThrownBy(() -> productDao.create(new Account("Pim", ""))));
+                exceptionThrownBy(() -> accountDao.create(new Account("Pim", ""))));
 
         Assert.assertNotNull("Null name was accepted",
-                exceptionThrownBy(() -> productDao.create(new Account(null, "pim@mail.nl"))));
+                exceptionThrownBy(() -> accountDao.create(new Account(null, "pim@mail.nl"))));
 
         Assert.assertNotNull("Null mail was accepted",
-                exceptionThrownBy(() -> productDao.create(new Account("Pim", null))));
+                exceptionThrownBy(() -> accountDao.create(new Account("Pim", null))));
     }
 
     @Test
@@ -70,7 +67,7 @@ public class AccountDaoJPATest {
         Mockito.when(em.createQuery(query))
                 .thenReturn(mockQuery);
 
-        final List<Account> newAccounts = productDao.getAll();
+        final List<Account> newAccounts = accountDao.getAll();
         Assert.assertEquals("Get All Accounts did not return the correct accounts",
                 accounts.size(),
                 newAccounts.size());
@@ -82,7 +79,7 @@ public class AccountDaoJPATest {
         Mockito.when(em.find(Account.class, accounts.get(0).getId())).thenReturn(accounts.get(0));
         Assert.assertEquals("Account was not merged.",
             accounts.get(0),
-            productDao.edit(accounts.get(0)));
+            accountDao.edit(accounts.get(0)));
         Mockito.verify(em).merge(accounts.get(0));
     }
 
@@ -94,12 +91,12 @@ public class AccountDaoJPATest {
 
         Assert.assertEquals("Wrong account was returned.",
                 accounts.get(0),
-                productDao.findByMail(accounts.get(0).getMail()));
+                accountDao.findByMail(accounts.get(0).getMail()));
         Mockito.verify(mockedQuery).setParameter("mail", accounts.get(0).getMail());
 
         Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(2));
 
         Assert.assertNotNull("Inactive account was returned.",
-                exceptionThrownBy(() -> productDao.findByMail(accounts.get(2).getMail())));
+                exceptionThrownBy(() -> accountDao.findByMail(accounts.get(2).getMail())));
     }
 }
