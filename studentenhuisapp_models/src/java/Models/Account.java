@@ -2,6 +2,7 @@ package Models;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @Entity
 @XmlRootElement
@@ -18,6 +19,8 @@ public class Account {
     @Column(unique = true, nullable = false)
     private String mail;
     private boolean active;
+    @ManyToMany(targetEntity = Group.class)
+    private List<Group> groups;
 
     public Account() { }
 
