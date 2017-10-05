@@ -1,8 +1,7 @@
 package DAO.JPAImpl;
 
 import DAO.IGroupDao;
-import Models.Account;
-import Models.Group;
+import Models.*;
 
 import javax.persistence.*;
 import java.util.List;
