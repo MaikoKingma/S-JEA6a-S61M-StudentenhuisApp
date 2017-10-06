@@ -2,7 +2,6 @@ package DAO.JPAImpl;
 
 import DAO.IAccountDao;
 import Models.Account;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;

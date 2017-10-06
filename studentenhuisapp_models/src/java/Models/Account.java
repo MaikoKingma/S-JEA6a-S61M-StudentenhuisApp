@@ -20,7 +20,8 @@ public class Account {
     @Column(unique = true, nullable = false)
     private String mail;
     private boolean active;
-    @ManyToMany(targetEntity = Group.class)
+    @ManyToMany
+    @JoinTable(name="ACCOUNT_GROUP")
     private List<Group> groups;
 
     public Account() { }

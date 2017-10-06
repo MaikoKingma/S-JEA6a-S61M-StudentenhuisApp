@@ -15,7 +15,7 @@ public class Group {
     private long id;
     @Column(nullable = false)
     private String name;
-    @ManyToMany(targetEntity=Account.class, mappedBy="groups")
+    @ManyToMany(mappedBy="groups")
     private List<Account> accounts;
 
     public Group() { }

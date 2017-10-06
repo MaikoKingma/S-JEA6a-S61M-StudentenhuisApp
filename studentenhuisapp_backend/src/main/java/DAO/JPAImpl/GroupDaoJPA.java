@@ -1,18 +1,17 @@
 package DAO.JPAImpl;
 
 import DAO.IGroupDao;
-import Models.*;
+import Models.Group;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
 import javax.persistence.*;
-import java.util.List;
 
 @Stateless
 @Default
 public class GroupDaoJPA implements IGroupDao {
 
-    @PersistenceContext(unitName = "StudentenhuisappPU")
+    @PersistenceContext
     private EntityManager em;
 
     public GroupDaoJPA() { }

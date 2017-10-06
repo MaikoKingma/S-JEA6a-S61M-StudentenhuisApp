@@ -1,7 +1,6 @@
 package Service;
 
 import DAO.IGroupDao;
-import DAO.JPAImpl.GroupDaoJPA;
 import JMS.JMSBrokerGateway;
 import JMS.Message.Events;
 import Models.*;
