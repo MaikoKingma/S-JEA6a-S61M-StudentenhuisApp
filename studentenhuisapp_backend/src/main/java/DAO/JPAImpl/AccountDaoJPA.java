@@ -12,7 +12,7 @@ import java.util.List;
 @Default
 public class AccountDaoJPA implements IAccountDao {
 
-    @PersistenceContext(unitName = "StudentenhuisappPU")
+    @PersistenceContext
     private EntityManager em;
 
     public AccountDaoJPA() { }

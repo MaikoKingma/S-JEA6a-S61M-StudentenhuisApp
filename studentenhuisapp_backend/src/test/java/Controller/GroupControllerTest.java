@@ -1,6 +1,7 @@
 package Controller;
 
 import Controllers.GroupController;
+import Controllers.JsonBodies.newGroupInfo;
 import Models.*;
 import Service.GroupService;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
@@ -13,6 +14,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
+
+import java.net.URI;
 
 import static java.net.HttpURLConnection.*;
 
@@ -36,16 +39,16 @@ public class GroupControllerTest extends JerseyTest {
 
     @Test
     public void createGroupTest() throws Exception {
-        final Account account = new Account("Maiko", "maiko999@mail.nl");
         final Group testGroup = new Group("Studentenhuis");
-        final Group returnGroup = testGroup;
-        returnGroup.addAccount(account);
-        Mockito.when(service.create(testGroup, account.getId()))
-                .thenReturn(returnGroup);
+        final long accountId = 1;
+        testGroup.setId(1);
+        final newGroupInfo body = new newGroupInfo(testGroup, accountId);
+        Mockito.when(service.create(testGroup, accountId))
+                .thenReturn(testGroup);
 
         final Response correctResult = target("/groups")
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.json(testGroup));
+                .post(Entity.json(body));
         Assert.assertEquals("Create Group did not give the correct response.",
                 HTTP_CREATED,
                 correctResult.getStatus());

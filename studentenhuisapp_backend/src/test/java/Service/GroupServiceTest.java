@@ -44,8 +44,6 @@ public class GroupServiceTest {
                 .thenReturn(accountWithGroup);
         Mockito.when(groupDao.create(testGroup))
                 .thenReturn(testGroup);
-        Mockito.when(groupDao.findById(testGroup.getId()))
-                .thenReturn(testGroup);
         Assert.assertEquals("Group was not created",
                 testGroup,
                 groupService.create(testGroup, account.getId()));

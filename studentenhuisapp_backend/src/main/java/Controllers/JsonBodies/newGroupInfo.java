@@ -11,6 +11,11 @@ public class newGroupInfo {
 
     public newGroupInfo() { }
 
+    public newGroupInfo(Group group, long accountId) {
+        this.group = group;
+        this.accountId = accountId;
+    }
+
     public Group getGroup() {
         return group;
     }

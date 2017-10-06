@@ -23,12 +23,7 @@ public class GroupService {
         Account creator = accountService.findById(creatorId);
         creator.addGroup(newGroup);
         Account updatedCreator = accountService.edit(creator);
-        newGroup = findById(newGroup.getId());
         jmsBroker.sendMessage("New Group Created", Events.GROUP_CREATED, newGroup.getId(), updatedCreator.getId());
         return group;
-    }
-
-    public Group findById(long id) {
-        return groupDao.findById(id);
     }
 }
