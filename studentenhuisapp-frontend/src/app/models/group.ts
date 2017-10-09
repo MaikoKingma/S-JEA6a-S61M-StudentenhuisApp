@@ -1,7 +1,6 @@
-export class Account {
+export class Group {
     constructor(
-        public fullName: string = '',
-        public mail: string = '',
+        public name: string = '',
         public id: number = 0,
         public accounts: Account[] = []
     ) { }

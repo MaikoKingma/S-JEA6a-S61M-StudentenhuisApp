@@ -9,4 +9,8 @@ export class ConfigService {
   getAccountApi(): string {
     return this.data.account_api;
   }
+
+  getGroupApi(): string {
+    return this.data.group_api;
+  }
 }

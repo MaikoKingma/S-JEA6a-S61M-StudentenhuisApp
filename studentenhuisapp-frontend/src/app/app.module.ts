@@ -10,6 +10,7 @@ import { AccountService } from './services/account.service';
 import { ConfigService } from './services/config.service';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { GroupService } from './services/group.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { LoginComponent } from './components/login/login.component';
     MdInputModule
   ],
   providers: [
+    GroupService,
     AccountService,
     ConfigService
   ],
