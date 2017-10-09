@@ -16,6 +16,7 @@
     <!-- jersey version for "Jersey Media Json Jackson" & "Jersey Test Framework Provider Jetty" -->
     <properties>
         <jersey.version>2.26-b03</jersey.version>
+        <google.version>1.23.0</google.version>
     </properties>
 
     <dependencies>
@@ -60,6 +61,20 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.1.4</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>${google.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>${google.version}</version>
         </dependency>
 
         <!-- Testing -->
