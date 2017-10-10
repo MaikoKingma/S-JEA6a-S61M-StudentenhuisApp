@@ -35,10 +35,9 @@ public class AccountController {
         return accountService.edit(account);
     }
 
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Account login(String mail) {
-        return accountService.login(mail);
+    public Response login() {
+        return Response.seeOther(accountService.getAuthorizationUri()).build();
     }
 }

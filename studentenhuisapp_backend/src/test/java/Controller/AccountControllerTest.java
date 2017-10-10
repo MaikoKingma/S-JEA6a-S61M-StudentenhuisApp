@@ -12,11 +12,11 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.persistence.EntityManager;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
 
-import static java.net.HttpURLConnection.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest extends JerseyTest {
@@ -46,7 +46,7 @@ public class AccountControllerTest extends JerseyTest {
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(testAccount));
             Assert.assertEquals("Create Account did not give the correct response.",
-                    HTTP_CREATED,
+                    HttpURLConnection.HTTP_CREATED,
                     correctResult.getStatus());
             Assert.assertEquals("Create Account did not return the correct account.",
                     testAccount,
@@ -56,14 +56,14 @@ public class AccountControllerTest extends JerseyTest {
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(""));
             Assert.assertEquals("Empty account was created",
-                    HTTP_INTERNAL_ERROR,
+                    HttpURLConnection.HTTP_INTERNAL_ERROR,
                     faultyResult.getStatus());
 
             final Response faultyResult2 = target("/accounts")
                     .request(MediaType.APPLICATION_JSON)
                     .post(Entity.json(null));
             Assert.assertEquals("Null account was created",
-                    HTTP_INTERNAL_ERROR,
+                    HttpURLConnection.HTTP_INTERNAL_ERROR,
                     faultyResult2.getStatus());
     }
 
@@ -79,7 +79,7 @@ public class AccountControllerTest extends JerseyTest {
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.json(testAccount));
         Assert.assertEquals("Account was not modified",
-                HTTP_OK,
+                HttpURLConnection.HTTP_OK,
                 correctResult.getStatus());
         Assert.assertEquals("Account was not the same",
                 testAccount,
@@ -89,26 +89,24 @@ public class AccountControllerTest extends JerseyTest {
                 .request(MediaType.APPLICATION_JSON)
                 .put(Entity.json(""));
         Assert.assertEquals("Empty account was modified",
-                HTTP_NO_CONTENT,
+                HttpURLConnection.HTTP_NO_CONTENT,
                 faultyResult.getStatus());
     }
 
     @Test
     public void loginAccountTest() throws Exception {
-        final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
-        testAccount.setId(1);
-        testAccount.setActive(true);
-        Mockito.when(service.login(testAccount.getMail()))
-                .thenReturn(testAccount);
+        URI uri = new URI("");
+        Mockito.when(service.getAuthorizationUri())
+                .thenReturn(uri);
 
         final Response correctResult = target("/accounts")
                 .request(MediaType.APPLICATION_JSON)
-                .post(Entity.text(testAccount.getMail()));
+                .get();
         Assert.assertEquals("Wrong status was returned",
-                HTTP_OK,
+                HttpURLConnection.HTTP_SEE_OTHER,
                 correctResult.getStatus());
-        Assert.assertEquals("Wrong account was returned",
-                testAccount,
-                correctResult.readEntity(Account.class));
+//        Assert.assertEquals("Wrong account was returned",
+//                testAccount,
+//                correctResult.readEntity(Account.class));
     }
 }
