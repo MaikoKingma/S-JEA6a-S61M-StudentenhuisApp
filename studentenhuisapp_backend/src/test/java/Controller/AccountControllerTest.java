@@ -3,23 +3,23 @@ package Controller;
 import Controllers.AccountController;
 import Models.Account;
 import Service.AccountService;
+
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
-
-import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountControllerTest extends JerseyTest {
+
+    @InjectMocks
+    private AccountController controller;
 
     @Mock
     private AccountService service;
@@ -95,18 +95,18 @@ public class AccountControllerTest extends JerseyTest {
 
     @Test
     public void loginAccountTest() throws Exception {
-        URI uri = new URI("");
+        URI uri = new URI("www.google.nl");
         Mockito.when(service.getAuthorizationUri())
                 .thenReturn(uri);
 
-        final Response correctResult = target("/accounts")
-                .request(MediaType.APPLICATION_JSON)
-                .get();
-        Assert.assertEquals("Wrong status was returned",
+        //Integration testing not necessary since method forwards the user to a external url
+        Response response = controller.login();
+
+        Assert.assertEquals("Login did not give the correct response code.",
                 HttpURLConnection.HTTP_SEE_OTHER,
-                correctResult.getStatus());
-//        Assert.assertEquals("Wrong account was returned",
-//                testAccount,
-//                correctResult.readEntity(Account.class));
+                response.getStatus());
+        Assert.assertEquals("Login did not give the correct response code.",
+                uri,
+                response.getLocation());
     }
 }
