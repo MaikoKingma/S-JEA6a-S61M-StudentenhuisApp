@@ -22,12 +22,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() { }
 
-  loginBtn(mail: string) {
-    this.accountService.login(mail).subscribe(account => {
-      this._zone.run(() => {
-        this.onStateChange.emit({ state: State.PROFILE });
-      });
-    });
+  loginBtn() {
+    this.accountService.login();
   }
 
   createAccountBtn() {
