@@ -19,18 +19,15 @@ import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
 
-    private final List<String> redirectUris = Arrays.asList("http://localhost:8080/studentenhuisapp/");
     List<Account> accounts;
 
-    @Mock
-    private GoogleAuthorizationCodeFlow authorizationCodeFlow;
     @Mock
     private IAccountDao userDao;
     @Mock
     private JMSBrokerGateway jmsBroker;
 
     @InjectMocks
-    private AccountService accountService = new AccountService(authorizationCodeFlow, redirectUris);
+    private AccountService accountService;
 
     public AccountServiceTest() {
         accounts = new ArrayList<Account>() {{
@@ -94,21 +91,5 @@ public class AccountServiceTest {
         Assert.assertEquals("Did not return the right product.",
                 testAccount,
                 accountService.findById(testAccount.getId()));
-    }
-
-    @Test
-    public void getAuthorizationUriTest() throws Exception {
-        GoogleAuthorizationCodeRequestUrl url = new GoogleAuthorizationCodeRequestUrl(
-                "https://accounts.google.com/o/oauth2/auth",
-                "ClientId",
-                "",
-                Arrays.asList("https://www.googleapis.com/auth/plus.login")
-        );
-        Mockito.when(authorizationCodeFlow.newAuthorizationUrl())
-                .thenReturn(url);
-        String uri = accountService.getAuthorizationUri().toString();
-        uri = uri.split("&redirect_uri=")[1];
-        //Check if redirectUri is set
-        Assert.assertTrue(uri.startsWith(redirectUris.get(0)));
     }
 }

@@ -35,9 +35,17 @@ public class AccountController {
         return accountService.edit(account);
     }
 
-    @GET
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login() {
-        return Response.seeOther(accountService.getAuthorizationUri()).build();
+    @Deprecated
+    public Account login(String mail) {
+        return accountService.login(mail);
     }
+
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response requestLogin() {
+//        return Response.seeOther(accountService.getAuthorizationUri()).build();
+//    }
 }

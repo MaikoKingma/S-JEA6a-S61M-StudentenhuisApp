@@ -95,18 +95,37 @@ public class AccountControllerTest extends JerseyTest {
 
     @Test
     public void loginAccountTest() throws Exception {
-        URI uri = new URI("www.google.nl");
-        Mockito.when(service.getAuthorizationUri())
-                .thenReturn(uri);
+        final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
+        testAccount.setId(1);
+        testAccount.setActive(true);
+        Mockito.when(service.login(testAccount.getMail()))
+                .thenReturn(testAccount);
 
-        //Integration testing not necessary since method forwards the user to a external url
-        Response response = controller.login();
+        final Response correctResult = target("/accounts")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.text(testAccount.getMail()));
+        Assert.assertEquals("Wrong status was returned",
+                HttpURLConnection.HTTP_OK,
+                correctResult.getStatus());
+        Assert.assertEquals("Wrong account was returned",
+                testAccount,
+                correctResult.readEntity(Account.class));
+    }
 
-        Assert.assertEquals("Login did not give the correct response code.",
-                HttpURLConnection.HTTP_SEE_OTHER,
-                response.getStatus());
-        Assert.assertEquals("Login did not give the correct response code.",
-                uri,
-                response.getLocation());
+    @Test
+    public void requestLoginAccountTest() throws Exception {
+//        URI uri = new URI("www.google.nl");
+//        Mockito.when(service.getAuthorizationUri())
+//                .thenReturn(uri);
+//
+//        //Integration testing not necessary since method forwards the user to a external url
+//        Response response = controller.login();
+//
+//        Assert.assertEquals("Login did not give the correct response code.",
+//                HttpURLConnection.HTTP_SEE_OTHER,
+//                response.getStatus());
+//        Assert.assertEquals("Login did not give the correct response code.",
+//                uri,
+//                response.getLocation());
     }
 }
