@@ -1,4 +1,4 @@
-package Controllers;
+package REST;
 
 import Models.Account;
 import Service.AccountService;

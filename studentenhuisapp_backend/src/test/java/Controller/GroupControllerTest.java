@@ -1,7 +1,7 @@
 package Controller;
 
-import Controllers.GroupController;
-import Controllers.JsonBodies.newGroupInfo;
+import REST.GroupController;
+import REST.DataTransferObject.newGroupInfo;
 import Models.*;
 import Service.GroupService;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
@@ -14,8 +14,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.*;
-
-import java.net.URI;
 
 import static java.net.HttpURLConnection.*;
 

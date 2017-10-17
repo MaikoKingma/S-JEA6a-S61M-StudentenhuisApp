@@ -1,4 +1,4 @@
-package Controllers.JsonBodies;
+package REST.DataTransferObject;
 
 import Models.Group;
 

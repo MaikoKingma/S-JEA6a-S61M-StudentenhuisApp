@@ -1,4 +1,4 @@
-package Controllers;
+package REST;
 
 import javax.ws.rs.container.*;
 import javax.ws.rs.ext.Provider;

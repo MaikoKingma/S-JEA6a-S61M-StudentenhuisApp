@@ -1,6 +1,6 @@
-package Controllers;
+package REST;
 
-import Controllers.JsonBodies.newGroupInfo;
+import REST.DataTransferObject.newGroupInfo;
 import Models.Group;
 import Service.GroupService;
 

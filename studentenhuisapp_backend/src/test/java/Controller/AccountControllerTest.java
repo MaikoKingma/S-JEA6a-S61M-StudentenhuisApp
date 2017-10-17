@@ -1,6 +1,6 @@
 package Controller;
 
-import Controllers.AccountController;
+import REST.AccountController;
 import Models.Account;
 import Service.AccountService;
 
