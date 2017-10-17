@@ -43,9 +43,9 @@ public class AccountController {
         return accountService.login(mail);
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response requestLogin() {
-//        return Response.seeOther(accountService.getAuthorizationUri()).build();
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response requestLogin() {
+        return Response.seeOther(accountService.requestLogin()).build();
+    }
 }

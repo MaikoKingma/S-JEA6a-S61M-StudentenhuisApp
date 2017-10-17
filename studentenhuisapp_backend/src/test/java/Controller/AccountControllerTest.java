@@ -114,18 +114,18 @@ public class AccountControllerTest extends JerseyTest {
 
     @Test
     public void requestLoginAccountTest() throws Exception {
-//        URI uri = new URI("www.google.nl");
-//        Mockito.when(service.getAuthorizationUri())
-//                .thenReturn(uri);
-//
-//        //Integration testing not necessary since method forwards the user to a external url
-//        Response response = controller.login();
-//
-//        Assert.assertEquals("Login did not give the correct response code.",
-//                HttpURLConnection.HTTP_SEE_OTHER,
-//                response.getStatus());
-//        Assert.assertEquals("Login did not give the correct response code.",
-//                uri,
-//                response.getLocation());
+        URI uri = new URI("www.google.nl");
+        Mockito.when(service.requestLogin())
+                .thenReturn(uri);
+
+        //Integration testing not necessary since method forwards the user to a external url
+        Response response = controller.requestLogin();
+
+        Assert.assertEquals("Login did not give the correct response code.",
+                HttpURLConnection.HTTP_SEE_OTHER,
+                response.getStatus());
+        Assert.assertEquals("Login did not give the correct response code.",
+                uri,
+                response.getLocation());
     }
 }

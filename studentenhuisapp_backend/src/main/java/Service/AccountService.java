@@ -7,6 +7,7 @@ import Models.Account;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.net.URI;
 import java.util.List;
 
 @Stateless
@@ -16,6 +17,9 @@ public class AccountService {
     private IAccountDao accountDao;
     @Inject
     private JMSBrokerGateway jmsBroker;
+
+    @Inject
+    private OAuthService oAuthService;
 
     public AccountService() { }
 
@@ -49,5 +53,9 @@ public class AccountService {
 
     public Account findById(long id) {
         return accountDao.findById(id);
+    }
+
+    public URI requestLogin() {
+        return oAuthService.getAuthorizationUri();
     }
 }

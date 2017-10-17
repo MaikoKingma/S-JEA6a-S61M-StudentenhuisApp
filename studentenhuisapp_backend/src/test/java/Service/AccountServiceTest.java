@@ -11,6 +11,8 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.net.URI;
 import java.util.*;
 
 import static com.github.stefanbirkner.fishbowl.Fishbowl.exceptionThrownBy;
@@ -25,6 +27,9 @@ public class AccountServiceTest {
     private IAccountDao userDao;
     @Mock
     private JMSBrokerGateway jmsBroker;
+
+    @Mock
+    private OAuthService oAuthService;
 
     @InjectMocks
     private AccountService accountService;
@@ -91,5 +96,18 @@ public class AccountServiceTest {
         Assert.assertEquals("Did not return the right product.",
                 testAccount,
                 accountService.findById(testAccount.getId()));
+    }
+
+    @Test
+    public void requestLoginTest() throws Exception {
+        URI uri = new URI("www.google.nl");
+        Mockito.when(oAuthService.getAuthorizationUri())
+                .thenReturn(uri);
+
+        URI response = accountService.requestLogin();
+
+        Assert.assertEquals("Did not return the right uri.",
+                uri,
+                response);
     }
 }
