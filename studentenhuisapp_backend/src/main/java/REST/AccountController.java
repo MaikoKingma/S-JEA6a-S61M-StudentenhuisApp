@@ -31,4 +31,11 @@ public class AccountController {
     public Response requestLogin() {
         return Response.seeOther(accountService.requestLogin()).build();
     }
+
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response accountLoggedin(String authorizationCode) {
+        Account account = accountService.accountAuthorized(authorizationCode);
+        return Response.ok(account).header("Authorization", accountService.getAccessToken(account.getId())).build();
+    }
 }

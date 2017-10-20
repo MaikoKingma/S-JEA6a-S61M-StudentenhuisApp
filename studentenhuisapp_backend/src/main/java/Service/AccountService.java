@@ -13,7 +13,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 
 @Stateless
 public class AccountService {
@@ -45,14 +44,18 @@ public class AccountService {
     }
 
     public Account accountAuthorized(String authorizationCode) {
-        Account account = null;
+        Account account;
         try {
             GoogleTokenResponse tokenResponse = oAuthService.getAccessToken(authorizationCode);
             GoogleUserInfo userInfo = googleController.getUserInfo(tokenResponse.getTokenType() + " " + tokenResponse.getAccessToken());
             account = findByGoogleId(userInfo.getId());
-//            if (account == null) {
-//                account = accountDao.create(new Account())
-//            }
+            if (account == null) {
+                account = accountDao.create(new Account(userInfo.getName(), userInfo.getId()));
+            }
+            Object credentials = oAuthService.getCredentials(account.getId() + "");
+            if (credentials == null) {
+                oAuthService.storeCredentials(tokenResponse, account.getId() + "");
+            }
         } catch (IOException e) {
             throw new NullPointerException(e.getMessage());
         }
@@ -63,5 +66,13 @@ public class AccountService {
 
     public Account findByGoogleId(String googleId) {
         return accountDao.findByGoogleId(googleId);
+    }
+
+    public String getAccessToken(long userId) {
+        try {
+            return "Bearer " + oAuthService.getCredentials(userId + "").getAccessToken();
+        } catch (IOException e) {
+            throw new NullPointerException(e.getMessage());
+        }
     }
 }
