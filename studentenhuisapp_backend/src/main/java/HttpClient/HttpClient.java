@@ -1,19 +1,27 @@
 package HttpClient;
 
+import javax.ejb.Stateless;
 import java.io.*;
 import java.net.*;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Maiko on 17/10/2017.
  */
+@Stateless
 public class HttpClient {
 
-    private String sendGet(String url, Map<String, String> headers) throws Exception {
+    public HttpClient() { }
+
+    public String sendGet(URL url) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        return sendGet(url, headers);
+    }
+
+    public String sendGet(URL url, Map<String, String> headers) throws IOException {
 
         //Create request
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
         for (String header : headers.keySet()) {
             con.setRequestProperty(header, headers.get(header));
         }

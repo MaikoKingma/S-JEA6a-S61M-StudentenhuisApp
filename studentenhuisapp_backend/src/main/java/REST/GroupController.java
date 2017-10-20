@@ -1,6 +1,6 @@
 package REST;
 
-import REST.DataTransferObject.newGroupInfo;
+import DataTransferObject.NewGroupInfo;
 import Models.Group;
 import Service.GroupService;
 
@@ -23,7 +23,7 @@ public class GroupController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(newGroupInfo body) {
+    public Response create(NewGroupInfo body) {
         final Group newGroup = groupService.create(body.getGroup(), body.getAccountId());
         final URI uri = uriInfo.getAbsolutePathBuilder().path(newGroup.getId() + "").build();
         return Response.created(uri).entity(newGroup).build();

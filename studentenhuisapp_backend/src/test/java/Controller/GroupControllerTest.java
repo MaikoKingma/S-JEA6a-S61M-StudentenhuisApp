@@ -1,7 +1,7 @@
 package Controller;
 
 import REST.GroupController;
-import REST.DataTransferObject.newGroupInfo;
+import DataTransferObject.NewGroupInfo;
 import Models.*;
 import Service.GroupService;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
@@ -40,7 +40,7 @@ public class GroupControllerTest extends JerseyTest {
         final Group testGroup = new Group("Studentenhuis");
         final long accountId = 1;
         testGroup.setId(1);
-        final newGroupInfo body = new newGroupInfo(testGroup, accountId);
+        final NewGroupInfo body = new NewGroupInfo(testGroup, accountId);
         Mockito.when(service.create(testGroup, accountId))
                 .thenReturn(testGroup);
 

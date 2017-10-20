@@ -10,6 +10,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.MemoryDataStoreFactory;
 
+import javax.ejb.Stateless;
 import java.io.*;
 import java.net.URI;
 import java.util.*;
@@ -17,6 +18,7 @@ import java.util.*;
 /**
  * Created by Maiko on 17/10/2017.
  */
+@Stateless
 public class OAuthService {
 
     //All endpoints we want to use
@@ -28,7 +30,7 @@ public class OAuthService {
     private List<String> redirectUris;
 
     /**
-     * Constructor used by UniTests to mock the GoogleAuthorizationCodeFlow
+     * Constructor used by UnitTests to mock the GoogleAuthorizationCodeFlow
      */
     public OAuthService(GoogleAuthorizationCodeFlow authorizationCodeFlow, List<String> redirectUris) {
         this.authorizationCodeFlow = authorizationCodeFlow;
@@ -38,15 +40,15 @@ public class OAuthService {
     public OAuthService() {
         //ToDo Store in database
         dataStoreFactory = new MemoryDataStoreFactory();
-        JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
         //Load oAuth properties
         try(InputStreamReader stream = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("/client_secrets.json"))) {
-            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, stream);
+            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, stream);
             redirectUris = clientSecrets.getDetails().getRedirectUris();
 
             //Create AuthorizationFlow
-            authorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(new NetHttpTransport(), JSON_FACTORY, clientSecrets, SCOPES)
+            authorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(new NetHttpTransport(), jsonFactory, clientSecrets, SCOPES)
                     .setDataStoreFactory(dataStoreFactory)
                     .build();
         } catch (IOException e) {
@@ -60,11 +62,15 @@ public class OAuthService {
         return url.toURI();
     }
 
-    public Credential loadCredentials(String userId) throws IOException {
+    public Credential getCredentials(String userId) throws IOException {
         return authorizationCodeFlow.loadCredential(userId);
     }
 
     public GoogleTokenResponse getAccessToken(String authorizationCode) throws IOException {
         return authorizationCodeFlow.newTokenRequest(authorizationCode).execute();
+    }
+
+    public Credential storeCredentials(GoogleTokenResponse response, String userId) throws  IOException {
+        return authorizationCodeFlow.createAndStoreCredential(response, userId);
     }
 }

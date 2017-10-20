@@ -1,17 +1,17 @@
-package REST.DataTransferObject;
+package DataTransferObject;
 
 import Models.Group;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class newGroupInfo {
+public class NewGroupInfo {
     private Group group;
     private long accountId;
 
-    public newGroupInfo() { }
+    public NewGroupInfo() { }
 
-    public newGroupInfo(Group group, long accountId) {
+    public NewGroupInfo(Group group, long accountId) {
         this.group = group;
         this.accountId = accountId;
     }

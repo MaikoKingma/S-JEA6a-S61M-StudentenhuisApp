@@ -1,12 +1,17 @@
 package Service;
 
 import DAO.IAccountDao;
+import DataTransferObject.GoogleUserInfo;
+import HttpClient.GoogleController;
 import JMS.JMSBrokerGateway;
 import JMS.Message.Events;
 import Models.Account;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -17,9 +22,10 @@ public class AccountService {
     private IAccountDao accountDao;
     @Inject
     private JMSBrokerGateway jmsBroker;
-
     @Inject
     private OAuthService oAuthService;
+    @Inject
+    private GoogleController googleController;
 
     public AccountService() { }
 
@@ -57,5 +63,19 @@ public class AccountService {
 
     public URI requestLogin() {
         return oAuthService.getAuthorizationUri();
+    }
+
+    public Account accountAuthorized(String authorizationCode) {
+        Account account = null;
+        try {
+            GoogleTokenResponse tokenResponse = oAuthService.getAccessToken(authorizationCode);
+            GoogleUserInfo userInfo = googleController.getUserInfo(tokenResponse.getTokenType() + " " + tokenResponse.getAccessToken());
+
+        } catch (IOException e) {
+            throw new NullPointerException(e.getMessage());
+        }
+
+        jmsBroker.sendMessage("User logged in", Events.ACCOUNT_LOGGED_IN, account.getId());
+        return account;
     }
 }
