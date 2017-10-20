@@ -37,39 +37,8 @@ public class AccountControllerTest extends JerseyTest {
     }
 
     @Test
-    public void createAccountTest() throws Exception {
-            final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
-            Mockito.when(service.create(testAccount))
-                    .thenReturn(testAccount);
-
-            final Response correctResult = target("/accounts")
-                    .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.json(testAccount));
-            Assert.assertEquals("Create Account did not give the correct response.",
-                    HttpURLConnection.HTTP_CREATED,
-                    correctResult.getStatus());
-            Assert.assertEquals("Create Account did not return the correct account.",
-                    testAccount,
-                    correctResult.readEntity(Account.class));
-
-            final Response faultyResult = target("/accounts")
-                    .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.json(""));
-            Assert.assertEquals("Empty account was created",
-                    HttpURLConnection.HTTP_INTERNAL_ERROR,
-                    faultyResult.getStatus());
-
-            final Response faultyResult2 = target("/accounts")
-                    .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.json(null));
-            Assert.assertEquals("Null account was created",
-                    HttpURLConnection.HTTP_INTERNAL_ERROR,
-                    faultyResult2.getStatus());
-    }
-
-    @Test
     public void editAccountTest() throws Exception {
-        final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
+        final Account testAccount = new Account("Maiko", "754221452");
         testAccount.setId(1);
         testAccount.setActive(true);
         Mockito.when(service.edit(Mockito.any(Account.class)))
@@ -91,25 +60,6 @@ public class AccountControllerTest extends JerseyTest {
         Assert.assertEquals("Empty account was modified",
                 HttpURLConnection.HTTP_NO_CONTENT,
                 faultyResult.getStatus());
-    }
-
-    @Test
-    public void loginAccountTest() throws Exception {
-        final Account testAccount = new Account("Maiko", "maiko999@mail.nl");
-        testAccount.setId(1);
-        testAccount.setActive(true);
-        Mockito.when(service.login(testAccount.getMail()))
-                .thenReturn(testAccount);
-
-        final Response correctResult = target("/accounts")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.text(testAccount.getMail()));
-        Assert.assertEquals("Wrong status was returned",
-                HttpURLConnection.HTTP_OK,
-                correctResult.getStatus());
-        Assert.assertEquals("Wrong account was returned",
-                testAccount,
-                correctResult.readEntity(Account.class));
     }
 
     @Test

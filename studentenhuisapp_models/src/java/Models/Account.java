@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @XmlRootElement
 @NamedQueries(value = {
-        @NamedQuery(name = "accountdao.findByMail", query = "SELECT p FROM Account p where p.mail = :mail"),
         @NamedQuery(name = "accountdao.findByGoogleId", query = "SELECT p FROM Account p where p.googleId = :googleId")
 })
 public class Account {
@@ -21,7 +20,6 @@ public class Account {
     @Column(nullable = false)
     private String fullName;
     @Column(unique = true, nullable = false)
-    private String mail;
     private boolean active;
     @ManyToMany
     @JoinTable(name="ACCOUNT_GROUP")
@@ -29,9 +27,9 @@ public class Account {
 
     public Account() { }
 
-    public Account(String fullName, String mail) {
+    public Account(String fullName, String googleId) {
         this.fullName = fullName;
-        this.mail = mail;
+        this.googleId = googleId;
     }
 
     public long getId() {
@@ -48,14 +46,6 @@ public class Account {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public boolean isActive() {
@@ -97,10 +87,10 @@ public class Account {
         Account account = (Account) o;
 
         if (id != account.id) return false;
-        if (googleId != null ? !googleId.equals(account.googleId) : account.googleId != null) return false;
         if (active != account.active) return false;
+        if (googleId != null ? !googleId.equals(account.googleId) : account.googleId != null) return false;
         if (fullName != null ? !fullName.equals(account.fullName) : account.fullName != null) return false;
-        return mail != null ? mail.equals(account.mail) : account.mail == null;
+        return groups != null ? groups.equals(account.groups) : account.groups == null;
     }
 
     @Override
@@ -108,8 +98,8 @@ public class Account {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (googleId != null ? googleId.hashCode() : 0);
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (mail != null ? mail.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);
+        result = 31 * result + (groups != null ? groups.hashCode() : 0);
         return result;
     }
 }

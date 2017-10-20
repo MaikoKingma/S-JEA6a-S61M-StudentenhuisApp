@@ -19,28 +19,11 @@ public class AccountController {
     @Context
     private UriInfo uriInfo;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Account account) {
-        final Account newAccount = accountService.create(account);
-        final URI uri = uriInfo.getAbsolutePathBuilder().path(newAccount.getId() + "").build();
-        return Response.created(uri).entity(newAccount).build();
-    }
-
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Account edit(Account account) {
         return accountService.edit(account);
-    }
-
-    @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Deprecated
-    public Account login(String mail) {
-        return accountService.login(mail);
     }
 
     @GET

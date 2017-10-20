@@ -36,9 +36,9 @@ public class AccountServiceTest {
 
     public AccountServiceTest() {
         accounts = new ArrayList<Account>() {{
-            add(new Account("Maiko", "maiko@mail.nl"));
-            add(new Account("Pim", "pim@mail.nl"));
-            add(new Account("Loek", "loek@mail.nl"));
+            add(new Account("Maiko", "47312904"));
+            add(new Account("Pim", "3411235"));
+            add(new Account("Loek", "1261341"));
         }};
     }
 
@@ -47,23 +47,6 @@ public class AccountServiceTest {
         //Mockito.doNothing().when(jmsBroker).sendMessage(Mockito.anyString(), Mockito.any(Events.class));
         Mockito.doNothing().when(jmsBroker).sendMessage(Mockito.anyString(), Mockito.any(Events.class), Mockito.anyLong());
         //Mockito.doNothing().when(jmsBroker).sendMessage(Mockito.anyString(), Mockito.any(Events.class), Mockito.anyLong(), Mockito.anyLong());
-    }
-
-    @Test
-    public void createAccountTest() throws Exception {
-        final Account testAccount = new Account("Maiko", "maiko@mail.nl");
-        Mockito.when(userDao.create(testAccount)).thenReturn(testAccount);
-        Assert.assertEquals("User was not created",
-                testAccount,
-                accountService.create(testAccount));
-        Assert.assertTrue("New user is not active.",
-                testAccount.isActive());
-        Mockito.verify(jmsBroker)
-                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_CREATED), Mockito.eq(testAccount.getId()));
-
-        Mockito.when(userDao.getAll()).thenReturn(accounts);
-        Assert.assertNotNull("An account was created with an existing mail adress.",
-                exceptionThrownBy(() -> accountService.create(accounts.get(0))));
     }
 
     @Test
@@ -77,18 +60,8 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void loginAccountTest() throws Exception {
-        Mockito.when(userDao.findByMail(accounts.get(0).getMail())).thenReturn(accounts.get(0));
-        Assert.assertEquals("Wrong account returned.",
-                accounts.get(0),
-                accountService.login(accounts.get(0).getMail()));
-        Mockito.verify(jmsBroker)
-                .sendMessage(Mockito.anyString(), Mockito.eq(Events.ACCOUNT_LOGGED_IN), Mockito.eq(accounts.get(0).getId()));
-    }
-
-    @Test
     public void findByIdTest() throws Exception {
-        final Account testAccount = new Account("Maiko", "maiko@mail.nl");
+        final Account testAccount = new Account("Maiko", "754221452");
 
         Mockito.when(userDao.findById(testAccount.getId()))
                 .thenReturn(testAccount);
@@ -113,8 +86,7 @@ public class AccountServiceTest {
 
     @Test
     public void findByGoogleIdTest() throws Exception {
-        final Account testAccount = new Account("Maiko", "maiko@mail.nl");
-        testAccount.setGoogleId("3143215123");
+        final Account testAccount = new Account("Maiko", "754221452");
 
         Mockito.when(userDao.findByGoogleId(testAccount.getGoogleId()))
                 .thenReturn(testAccount);

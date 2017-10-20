@@ -29,32 +29,11 @@ public class AccountService {
 
     public AccountService() { }
 
-    public Account create(Account account) {
-        List<Account> currentAccounts = accountDao.getAll();
-        for(Account a : currentAccounts) {
-            if (a.getMail().equals(account.getMail())) {
-                throw new NullPointerException();
-            }
-        }
-
-        account.setActive(true);
-        Account newAccount = accountDao.create(account);
-        jmsBroker.sendMessage("New Account Created", Events.ACCOUNT_CREATED, newAccount.getId());
-        return newAccount;
-    }
-
     public Account edit(Account account) {
         account.setActive(true);
         Account newAccount = accountDao.edit(account);
         jmsBroker.sendMessage("Account modified", Events.ACCOUNT_MODIFIED, newAccount.getId());
         return newAccount;
-    }
-
-    @Deprecated
-    public Account login(String mail) {
-        Account account = accountDao.findByMail(mail);
-        jmsBroker.sendMessage("User logged in", Events.ACCOUNT_LOGGED_IN, account.getId());
-        return account;
     }
 
     public Account findById(long id) {
@@ -70,7 +49,10 @@ public class AccountService {
         try {
             GoogleTokenResponse tokenResponse = oAuthService.getAccessToken(authorizationCode);
             GoogleUserInfo userInfo = googleController.getUserInfo(tokenResponse.getTokenType() + " " + tokenResponse.getAccessToken());
-
+            account = findByGoogleId(userInfo.getId());
+//            if (account == null) {
+//                account = accountDao.create(new Account())
+//            }
         } catch (IOException e) {
             throw new NullPointerException(e.getMessage());
         }

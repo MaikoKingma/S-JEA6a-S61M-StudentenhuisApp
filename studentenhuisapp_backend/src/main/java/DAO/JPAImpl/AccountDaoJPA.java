@@ -20,7 +20,7 @@ public class AccountDaoJPA implements IAccountDao {
     @Override
     public Account create(Account account) {
         if (account.getFullName().equals("") ||
-                account.getMail().equals("")) {
+                account.getGoogleId().equals("")) {
             throw new NullPointerException();
         }
         em.persist(account);
@@ -41,17 +41,6 @@ public class AccountDaoJPA implements IAccountDao {
     }
 
     @Override
-    public Account findByMail(String mail) {
-        Query q = em.createNamedQuery("accountdao.findByMail");
-        q.setParameter("mail", mail);
-        final Account foundAccount = (Account) q.getSingleResult();
-        if (foundAccount.isActive()) {
-            return foundAccount;
-        }
-        throw new NullPointerException();
-    }
-
-    @Override
     public Account findById(long id) {
         return em.find(Account.class, id);
     }
@@ -60,7 +49,11 @@ public class AccountDaoJPA implements IAccountDao {
     public Account findByGoogleId(String googleId) {
         Query q = em.createNamedQuery("accountdao.findByGoogleId");
         q.setParameter("googleId", googleId);
-        final Account foundAccount = (Account) q.getSingleResult();
+        Object o = q.getSingleResult();
+        if (o == null){
+            return null;
+        }
+        final Account foundAccount = (Account) o;
         if (foundAccount.isActive()) {
             return foundAccount;
         }
