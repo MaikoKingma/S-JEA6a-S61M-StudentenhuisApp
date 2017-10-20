@@ -55,4 +55,15 @@ public class AccountDaoJPA implements IAccountDao {
     public Account findById(long id) {
         return em.find(Account.class, id);
     }
+
+    @Override
+    public Account findByGoogleId(String googleId) {
+        Query q = em.createNamedQuery("accountdao.findByGoogleId");
+        q.setParameter("googleId", googleId);
+        final Account foundAccount = (Account) q.getSingleResult();
+        if (foundAccount.isActive()) {
+            return foundAccount;
+        }
+        throw new NullPointerException();
+    }
 }

@@ -8,13 +8,16 @@ import java.util.List;
 @Entity
 @XmlRootElement
 @NamedQueries(value = {
-        @NamedQuery(name = "accountdao.findByMail", query = "SELECT p FROM Account p where p.mail = :mail")
+        @NamedQuery(name = "accountdao.findByMail", query = "SELECT p FROM Account p where p.mail = :mail"),
+        @NamedQuery(name = "accountdao.findByGoogleId", query = "SELECT p FROM Account p where p.googleId = :googleId")
 })
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
+    private String googleId;
     @Column(nullable = false)
     private String fullName;
     @Column(unique = true, nullable = false)
@@ -78,6 +81,14 @@ public class Account {
         groups.add(group);
     }
 
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,6 +97,7 @@ public class Account {
         Account account = (Account) o;
 
         if (id != account.id) return false;
+        if (googleId != null ? !googleId.equals(account.googleId) : account.googleId != null) return false;
         if (active != account.active) return false;
         if (fullName != null ? !fullName.equals(account.fullName) : account.fullName != null) return false;
         return mail != null ? mail.equals(account.mail) : account.mail == null;
@@ -94,6 +106,7 @@ public class Account {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (googleId != null ? googleId.hashCode() : 0);
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         result = 31 * result + (mail != null ? mail.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);

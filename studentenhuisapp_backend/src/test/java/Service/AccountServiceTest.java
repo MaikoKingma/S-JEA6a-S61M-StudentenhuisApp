@@ -110,4 +110,17 @@ public class AccountServiceTest {
                 uri,
                 response);
     }
+
+    @Test
+    public void findByGoogleIdTest() throws Exception {
+        final Account testAccount = new Account("Maiko", "maiko@mail.nl");
+        testAccount.setGoogleId("3143215123");
+
+        Mockito.when(userDao.findByGoogleId(testAccount.getGoogleId()))
+                .thenReturn(testAccount);
+
+        Assert.assertEquals("Did not return the right product.",
+                testAccount,
+                accountService.findByGoogleId(testAccount.getGoogleId()));
+    }
 }

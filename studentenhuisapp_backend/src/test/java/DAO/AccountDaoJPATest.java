@@ -32,10 +32,13 @@ public class AccountDaoJPATest {
         }};
         accounts.get(0).setId(1);
         accounts.get(0).setActive(true);
+        accounts.get(0).setGoogleId("47312904");
         accounts.get(1).setId(2);
         accounts.get(1).setActive(true);
+        accounts.get(1).setGoogleId("3411235");
         accounts.get(2).setId(3);
         accounts.get(2).setActive(false);
+        accounts.get(2).setGoogleId("1261341");
     }
 
     @Test
@@ -107,5 +110,22 @@ public class AccountDaoJPATest {
                 .thenReturn(account);
 
         Assert.assertEquals(account, accountDao.findById(account.getId()));
+    }
+
+    @Test
+    public void findByGoogleIdTest() throws Exception {
+        Query mockedQuery = Mockito.mock(Query.class);
+        Mockito.when(em.createNamedQuery("accountdao.findByGoogleId")).thenReturn(mockedQuery);
+        Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(0));
+
+        Assert.assertEquals("Wrong account was returned.",
+                accounts.get(0),
+                accountDao.findByGoogleId(accounts.get(0).getGoogleId()));
+        Mockito.verify(mockedQuery).setParameter("googleId", accounts.get(0).getGoogleId());
+
+        Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(2));
+
+        Assert.assertNotNull("Inactive account was returned.",
+                exceptionThrownBy(() -> accountDao.findByGoogleId(accounts.get(2).getGoogleId())));
     }
 }

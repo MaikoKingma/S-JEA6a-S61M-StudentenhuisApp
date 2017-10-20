@@ -10,4 +10,5 @@ public interface IAccountDao {
     List<Account> getAll();
     Account findByMail(String mail);
     Account findById(long id);
+    Account findByGoogleId(String googleId);
 }
