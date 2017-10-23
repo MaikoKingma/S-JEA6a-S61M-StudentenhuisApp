@@ -33,7 +33,8 @@ public class AccountController {
     }
 
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response accountLoggedin(String authorizationCode) {
         Account account = accountService.accountAuthorized(authorizationCode);
         return Response.ok(account).header("Authorization", accountService.getAccessToken(account.getId())).build();

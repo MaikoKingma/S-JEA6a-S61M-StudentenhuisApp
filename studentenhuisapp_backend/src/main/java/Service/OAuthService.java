@@ -1,10 +1,7 @@
 package Service;
 
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.googleapis.auth.oauth2.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -67,7 +64,10 @@ public class OAuthService {
     }
 
     public GoogleTokenResponse getAccessToken(String authorizationCode) throws IOException {
-        return authorizationCodeFlow.newTokenRequest(authorizationCode).execute();
+        return authorizationCodeFlow
+                .newTokenRequest(authorizationCode)
+                .setRedirectUri(redirectUris.get(0))
+                .execute();
     }
 
     public Credential storeCredentials(GoogleTokenResponse response, String userId) throws  IOException {
