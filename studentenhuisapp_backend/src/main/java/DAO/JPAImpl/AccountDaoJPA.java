@@ -49,13 +49,16 @@ public class AccountDaoJPA implements IAccountDao {
     public Account findByGoogleId(String googleId) {
         Query q = em.createNamedQuery("accountdao.findByGoogleId");
         q.setParameter("googleId", googleId);
-        Object o = q.getSingleResult();
-        if (o == null){
+
+        Account account;
+        try {
+            account = (Account)q.getSingleResult();
+        } catch (NoResultException e) {
             return null;
         }
-        final Account foundAccount = (Account) o;
-        if (foundAccount.isActive()) {
-            return foundAccount;
+
+        if (account.isActive()) {
+            return account;
         }
         throw new NullPointerException();
     }

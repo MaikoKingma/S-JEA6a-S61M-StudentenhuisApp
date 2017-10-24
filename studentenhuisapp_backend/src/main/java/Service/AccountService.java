@@ -50,7 +50,9 @@ public class AccountService {
             GoogleUserInfo userInfo = googleController.getUserInfo(tokenResponse.getTokenType() + " " + tokenResponse.getAccessToken());
             account = findByGoogleId(userInfo.getId());
             if (account == null) {
-                account = accountDao.create(new Account(userInfo.getName(), userInfo.getId()));
+                Account newAccount = new Account(userInfo.getName(), userInfo.getId());
+                newAccount.setActive(true);
+                account = accountDao.create(newAccount);
             }
             Object credentials = oAuthService.getCredentials(account.getId() + "");
             if (credentials == null) {

@@ -94,7 +94,7 @@ public class AccountDaoJPATest {
 
     @Test
     public void findByGoogleIdTest() throws Exception {
-        Query mockedQuery = Mockito.mock(Query.class);
+        Query mockedQuery = Mockito.spy(Query.class);
         Mockito.when(em.createNamedQuery("accountdao.findByGoogleId")).thenReturn(mockedQuery);
         Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(0));
 
@@ -104,8 +104,15 @@ public class AccountDaoJPATest {
         Mockito.verify(mockedQuery).setParameter("googleId", accounts.get(0).getGoogleId());
 
         Mockito.when(mockedQuery.getSingleResult()).thenReturn(accounts.get(2));
-
         Assert.assertNotNull("Inactive account was returned.",
                 exceptionThrownBy(() -> accountDao.findByGoogleId(accounts.get(2).getGoogleId())));
+    }
+
+    @Test
+    public void findByGoogleIdNullTest() throws Exception {
+        Query mockedQuery = Mockito.spy(Query.class);
+        Mockito.when(em.createNamedQuery("accountdao.findByGoogleId")).thenReturn(mockedQuery);
+        Mockito.when(mockedQuery.getSingleResult()).thenThrow(new NoResultException());
+        Assert.assertNull("Method did not return null", accountDao.findByGoogleId("42809751"));
     }
 }
